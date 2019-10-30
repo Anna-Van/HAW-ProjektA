@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #F5F5F5;
+            } 
+            li {
+                float: left;
+            }     
+            li a {
+                display: block;
+                color: black;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            li a:hover {
+                background-color: white;
+            }    
+            .active {
+                background-color: #FFC0CB;
+            }
+
+            .topnav .search-container {
+                float: right;
+            }
+
+            .topnav input[type=text] {
+                padding: 6px;
+                margin-top: 8px;
+                font-size: 17px;
+                border: none;
+            }
+
+            .topnav .search-container button {
+                float: right;
+                padding: 6px 10px;
+                margin-top: 8px;
+                margin-right: 16px;
+                background: #ddd;
+                font-size: 17px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .topnav .search-container button:hover {
+                background: #ccc;
+            }
+
+            @media screen and (max-width: 600px) {
+                .topnav .search-container {
+                    float: none;
+                }
+                .topnav a, .topnav input[type=text], .topnav .search-container button {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                    width: 100%;
+                    margin: 0;
+                    padding: 14px;
+                }
+                .topnav input[type=text] {
+                    border: 1px solid #ccc;  
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li style="float:right"><a class="active" href="/MyAccount">My Account</a></li>
+            <li style="float:right"><a class="active" href="/ShoppingCart">Shopping Cart</a></li>
+        </ul>
+        <ul>
+            <div class="topnav">
+                <b><li><a class="active" href="/home">Home</a></li></b>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/Female">Female</a></li>
+                <li><a href="/Male">Male</a></li>
+                <li><a href="/Androgyneous">Androgyneous</a></li>
+                <li><a href="/Sale">SALE</a></li>
+
+                <div class="search-container">
+                    <form action="/action_page.php">
+                        <input type="text" placeholder="Search.." name="search">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </ul>
+          
+        <h1>Welcome to Candy Kingdom!</h1>
+    </body>
+</html>
