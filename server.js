@@ -172,7 +172,17 @@ app.get("/sale", function(req, res){
     
 });
 
+app.post('/search',function(req,res){
+    const search= req.body.search;
 
+    let sql = `SELECT * FROM products WHERE name LIKE '%${search}%'
+    OR species LIKE '%${search}%'
+    OR category LIKE '%${search}';`
+    db.all(sql, function(err,rows){
+            res.render('search',{shop: rows});
+        
+    })
+});
 //Auswertung nach der Registrierung
 app.post('/doRegister', function(req, res) {
     const firstname = req.body.firstname;
