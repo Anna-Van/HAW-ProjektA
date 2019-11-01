@@ -1,5 +1,5 @@
 CREATE TABLE products (
-    pid INTEGER AUTO_INCREMENT,
+    pid INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     species TEXT NOT NULL,
     category TEXT NOT NULL, 
@@ -8,8 +8,7 @@ CREATE TABLE products (
     price FLOAT,
     description TEXT,
     stock INTEGER,
-    pic TEXT,
-    PRIMARY KEY(pid)
+    pic TEXT
 );
 
 /*  NEXT: GREEN GUMDROP DUDE
@@ -83,19 +82,18 @@ Braco transformed into an ugly monster after making a deal with the demon Ogdoad
 ("Wormo","Gummy Worm","Candy","M",0,0.99,"He is a long gummy-worm with yellow, green, pink, and blue segments. He normally holds his head upside-down.",1,"https://vignette.wikia.nocookie.net/adventuretimewithfinnandjake/images/d/df/Wormo_trans.png/revision/latest?cb=20120812083909");
 
 CREATE TABLE customers(
-    cid INTEGER AUTO_INCREMENT,
+    cid INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
     firstname TEXT NOT NULL,
     surname TEXT NOT NULL,
-    adress TEXT NOT NULL,
+    address TEXT NOT NULL,
     zip INTEGER,
     city TEXT NOT NULL,
-    country TEXT NOT NULL,
-    PRIMARY KEY(cid)
+    country TEXT NOT NULL
 );
 
-INSERT INTO customers(email,password,firstname,surname,adress,zip,city,country) 
+INSERT INTO customers(email,password,firstname,surname,address,zip,city,country) 
 VALUES("test@accounts","blub","test","testermann","blubstreet 1",12345,"testcity","testcountry");
 
 CREATE TABLE orders(

@@ -4,10 +4,35 @@
         <title>Female</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
+            .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
             .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   width: 350px;
-  height: 350px; 
+  height: 420px; 
   margin: auto;
   text-align: center;
   font-family: arial;
@@ -135,20 +160,26 @@
         <ul class="w3-ul">
                 <% for (i=0; i<shop.length; i++){ %>
                  <% if (shop[i].gender=="F"){ %>
-                  <li>
-                      <div class="card">
-                          
-                                  <div class="container">
-                                        <img alt="<%shop[i].name %>" src="<%=shop[i].pic %>" height="100px" >
-                                        <h4><b><%=shop[i].name %> </b></h4> 
-                                        <p><br>
-                                        Species: <%=shop[i].species %> <br>
-                                        In Stock: <%=shop[i].stock %> <br>
-                                        <p class="price"><%=shop[i].price %> €</p> 
-                                        <p><button>Add to Cart</button></p>
-                                  </div>
-                                </div>
-                      </li> 
+                <li>
+                <br>
+                    <div class="card">
+                        
+                        <div class="container">
+                                <br>
+                <img alt="<%=shop[i].name %>" src="<%=shop[i].pic %>" height="100px" >
+                          <h4><b><%=shop[i].name %> </b></h4> 
+                          <p><br>
+                          Species: <%=shop[i].species %> <br>
+                          In Stock: <%=shop[i].stock %> <br>
+                          <div class="tooltip">Description
+                            <span class="tooltiptext"><%=shop[i].description %></span>
+                          </div>
+                          <p class="price"><%=shop[i].price %> €</p> 
+                          <p><button>Add to Cart</button></p>
+                        </div>
+                      </div>
+                          <br><br><br>
+                      </li>
                     <% } %>
                     
                 <% } %>   

@@ -26,7 +26,7 @@
             body {font-family: Arial, Helvetica, sans-serif;}
             form {border: 3px solid #f1f1f1;}
     
-            input[type=text],input[type=text],input[type=number],input[type=text],input[type=text],input[type=text],input[type=email], input[type=password], input[type=password] {
+            input[type=text],input[type=text],input[type=number],input[type=text],input[type=text],input[type=text] {
             width: 100%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -83,9 +83,9 @@
     </head>
 
     <body>
-       <h2>Register</h2>
-       <p>Please fill in this form to create an account.</p>
-       <form method="POST" action="/doRegister" name="register">
+       <h2>Update MyAddress</h2>
+       <p>Please fill in this form to update your account.</p>
+       <form method="POST" action="/changeIt" name="address">
             
             
         <div class="container">
@@ -107,21 +107,14 @@
           <label for="country"><b>Country</b></label><br>
           <input type="text" placeholder="Enter your Country" name="country" required><br><br><br><br><br>
 
-          <label for="email"><b>E-Mail</b></label><br>
-          <input type="email" placeholder="Enter E-Mail" name="email" required><br>
 
-          <label for="password"><b>Password</b></label><br>
-          <input type="password" placeholder="Enter Password" name="password" required><br>
-
-          <label for="confirm"><b>Confirm Password</b></label><br>
-          <input type="password" placeholder="Confirm Password" name="confirm" required><br>
-          <button type="submit">Register</button>
-          <br>
-          Already a Member? <a href="/login"> Sign in.</a>
+          <button type="submit">Update</button>
+          
+          
         </div>
       
         <div class="container" style="background-color:#f1f1f1">
-          <button type="button" href="/getHome" class="cancelbtn"><a href="/getHome">Cancel</a></button>
+          <button type="button" href="/changeIt" class="cancelbtn"><a href="/MyAccount">Cancel</a></button>
         </div>
   </form>
         

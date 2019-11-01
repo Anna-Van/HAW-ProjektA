@@ -1,4 +1,4 @@
-// Initialisierung der Moduke
+// Initialisierung bodyParser etc.
 const express = require('express');
 const app =  express();
 
@@ -8,18 +8,18 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.engine('.ejs', require('ejs').__express);
 app.set('view engine','ejs');
 
-//Initialisierung des Cookie Parsers
+
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-//Initialisierung von express-sessions
+
 const session = require('express-session');
 app.use(session({
     secret: 'example',
     resave: false,
     saveUninitialized: true
 }));
-
+//
 app.listen(3000, function(){
     console.log('listening on 3000');
 });
@@ -34,7 +34,7 @@ let db = new sqlite3.Database('shop.db', function(err) {
         console.log("Verbindung zur Datenbank wurde erfolgerich hergestellt.")
     }
 });
-
+//
 //Ausgabe des Registrieren Formulars
 app.get('/register', function(req, res){
     res.render('register');
@@ -44,12 +44,7 @@ app.get('/login', function(req, res){
     res.render('login');
 })
 
-app.get('/hello', function(req, res){
-    res.render('hello', { 
-        email: req.session.email
-    })
-});
-
+//Loginauswertung
 app.post('/doLogin', function(req, res){
     const email = req.body.email;
     const password = req.body.password;
@@ -60,10 +55,16 @@ app.post('/doLogin', function(req, res){
         if (password==row.password){
             req.session["sessionVariable"]= "ist angemeldet";
             req.session["user"] = row.firstname +" "+ row.surname;
+            req.session["firstname"] = row.firstname ;
+            req.session["surname"] = row.surname ;
+            req.session["address"] = row.address ;
+            req.session["zip"] = row.zip ;
+            req.session["country"] = row.country ;
+            req.session["email"] = row.email ;
             res.redirect("/getHome"); 
         }
         else {
-                res.render('false')
+                res.render('false',{"message":"Wrong Password"})
         };
     })
     
@@ -71,13 +72,14 @@ app.post('/doLogin', function(req, res){
 });
 
 
-
+//Session abbrechen zum ausloggen
 app.get("/logout", function(req, res){
     delete req.session["sessionVariable"];
     delete req.session["user"];
     res.redirect("/getHome");
 });
 
+//Anzeigen von Produktseiten mit Kategorien etc.
 app.get("/products", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
@@ -183,11 +185,14 @@ app.post('/search',function(req,res){
         
     })
 });
+//
+
 //Auswertung nach der Registrierung
+
 app.post('/doRegister', function(req, res) {
     const firstname = req.body.firstname;
     const surname = req.body.surname;
-    const adress = req.body.adress;
+    const address = req.body.address;
     const zip = req.body.zip;
     const city = req.body.city;
     const country = req.body.country;   
@@ -197,29 +202,28 @@ app.post('/doRegister', function(req, res) {
 
     if(password==confirm){
             //SQL Befehl um einen neuen Eintrag der Tabelle user hinzuzufügen
-        let sql = `INSERT INTO customers (firstname,surname, adress, zip, city, country, email, password) VALUES ("${firstname}","${surname}","${adress}",${zip}","${city}","${country}","${email}", "${password}");`
+        let sql = `INSERT INTO customers (firstname,surname, address, zip, city, country, email, password) VALUES ("${firstname}","${surname}","${address}", ${zip} ,"${city}","${country}","${email}", "${password}");`
         
         db.run(sql, function(err) {
             if (err) { 
                 console.error(err)
             } else {
-                res.render('newmember');
+                res.render('home',{"message":"Congratulation you are a member now!"});
             }
         })
     }
     else {
-        console.error(err)
+        res.render('registerfalse',{"message": "Passwords don't match"})
     }
 
 
 });
-
+//Auswertung Session und Anzeigen von Startseite mit der dazu gehörigen Nachricht
 app.get("/getHome", function(req, res){
     console.log(req.session);
     if (!req.session["sessionVariable"]){
-    res.render("home", {
-        "message":"Welcome to Candy Kingdom!"
-    });
+    res.render("home", {"message":"Welcome to Candy Kingdom!"}
+);
     
     }
     else {
@@ -230,16 +234,56 @@ app.get("/getHome", function(req, res){
     }
 });
 
+//Anzeigen von meinKonto bzw umleiten zum login, wenn nicht angemeldet
 app.get("/MyAccount", function(req, res){
     console.log(req.session);
     if (!req.session["sessionVariable"]){
-    res.render("login");
+    res.redirect("/login");
     
     }
     else {
-        const user = req.session["user"];
-        res.render("account", {
-            "message":"Welcome " +user
-        });
+        res.redirect("/AccountSummary")
     }
+});
+
+app.get("/AccountSummary", function(req, res){
+    console.log(req.session);
+    const user = req.session.user;
+    const email = req.session.email;
+
+    let sql = `SELECT * FROM customers WHERE email="${email}";`
+
+    db.all(sql, function(err,rows){
+        res.render('account',{shop: rows});
+    })
+});
+
+app.get('/changeAddress', function(req, res){
+    res.render('address');
+});
+
+app.post('/changeIt', function(req, res) {
+    console.log(req.session);
+    const email = req.session.email;
+
+    const firstname = req.body.firstname;
+    const surname = req.body.surname;
+    const address = req.body.address;
+    const zip = req.body.zip;
+    const city = req.body.city;
+    const country = req.body.country;   
+
+
+    let sql = `UPDATE customers SET firstname="${firstname}", surname="${surname}",address="${address}", zip=${zip}, city="${city}", country="${country}" WHERE email="${email}";`
+        
+    db.run(sql, function(err) {
+        if (err) { 
+            console.error(err)
+        } else {
+             res.render('home',{"message":"Your Account was updated!"});
+        }
+    })
+    
+
+
 });
