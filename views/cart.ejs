@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shopping Cart</title>
+        <h1>Shopping Cart</h1>
+    </head>
+    <body>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Serial Number</th>
+                        <th>Unit Price</th>>
+                        <th>Amount</th>
+                        <th>Sub-Total</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td><a href="#">Continue Shopping</a></td>
+                        <td>Grand Total: </td>
+                        <td>
+                            <%= shop.grandTotal%>
+                        </td>
+                    </tr>
+                </tfoot>
+                <br>
+            <% for(i = 0 ; i< shop.length;i++){ %>
+                <tr>
+                    <td> <%= shop[i].productName %></td>
+                    <td> <%= shop[i].serialNumber %></td>
+                    <td> <%= shop[i].unitPrice %> </td>
+                    <td> <%= shop[i].amountProduct %> </td>
+                    <td> <%= shop[i].unitPrice * shop[i].amountProduct%></td>
+                    <% } %>
+                </tr>
+            
+    </body>
+</html>
