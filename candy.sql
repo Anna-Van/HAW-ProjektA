@@ -96,12 +96,28 @@ CREATE TABLE customers(
 INSERT INTO customers(email,password,firstname,surname,address,zip,city,country) 
 VALUES("test@accounts","blub","test","testermann","blubstreet 1",12345,"testcity","testcountry");
 
+
 CREATE TABLE orders(
-    customer INTEGER,
+    orderId INTEGER AUTO_INCREMENT,
+    customerId INTEGER,
     productId INTEGER,
     amount INTEGER,
-    FOREIGN KEY(customer) REFERENCES customers(cid),
+    FOREIGN KEY(customerId) REFERENCES customers(cid),
     FOREIGN KEY(productId) REFERENCES products(pid)
 );
 
-INSERT INTO orders(customer,productId,amount) VALUES(1,1,1),(1,2,1);
+CREATE TABLE cart(
+    cartId INTEGER AUTO_INCREMENT,  /*id of product in that cart for ez removal*/
+    productName TEXT NOT NULL,
+    serialNumber INTEGER,
+    unitPrice FLOAT,
+    amountProduct INTEGER,
+    subTotal FLOAT,
+    grandTotal Float
+    FOREIGN KEY(unitPrice) REFERENCES products(price)
+    FOREIGN KEY(serialNumber) REFERENCES products(pid),
+    FOREIGN KEY(productName) REFERENCES products(name)
+);
+
+
+INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct) VALUES("Ann",1,99.99,1);
