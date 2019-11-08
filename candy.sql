@@ -98,23 +98,44 @@ VALUES("test@accounts","blub","test","testermann","blubstreet 1",12345,"testcity
 
 
 CREATE TABLE orders(
-    orderId INTEGER AUTO_INCREMENT,
-    customerId INTEGER,
-    productId INTEGER,
-    amount INTEGER,
-    FOREIGN KEY(customerId) REFERENCES customers(cid),
-    FOREIGN KEY(productId) REFERENCES products(pid)
+    order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cid INTEGER,
+    FOREIGN KEY(cid) REFERENCES customers(cid)
 );
 
+INSERT INTO orders(cid) VALUES(2);
+
+CREATE TABLE ordered_items(
+    order_id INTEGER,
+    product_id INTEGER,
+    quantity INTEGER NOT NULL,
+    totalprice FLOAT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(pid)
+);
+
+INSERT INTO ordered_items(order_id, product_id, quantity, totalprice) 
+VALUES(1, 2,1,4.99),
+(1,4,2,1.98),
+(1,8,3,5.97);
+
+--für test:
+INSERT INTO ordered_items(order_id, product_id, quantity, totalprice) 
+   ...> VALUES(2,1,1,4.99),
+   ...> (3,8,3,5.97);
+sqlite> INSERT INTO orders(cid) VALUES(1); 
+sqlite> INSERT INTO orders(cid) VALUES(1);
+
+
 CREATE TABLE cart(
-    cartId INTEGER AUTO_INCREMENT,  /*id of product in that cart for ez removal*/
+    cartId INTEGER AUTO_INCREMENT, 
     productName TEXT NOT NULL,
     serialNumber INTEGER,
     unitPrice FLOAT,
     amountProduct INTEGER,
     subTotal FLOAT,
-    grandTotal Float
-    FOREIGN KEY(unitPrice) REFERENCES products(price)
+    grandTotal Float,
+    FOREIGN KEY(unitPrice) REFERENCES products(price),
     FOREIGN KEY(serialNumber) REFERENCES products(pid),
     FOREIGN KEY(productName) REFERENCES products(name)
 );

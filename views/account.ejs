@@ -5,6 +5,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
+
+table {
+  width:100%;
+}
+table, th, td {
+  border: 1px solid rgb(59, 59, 59);
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+table#t01 tr:nth-child(even) {
+  background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+table#t01 th {
+  background-color: rgb(216, 160, 195);
+  color: white;
+}
+
              .button {
          background-color: #ee8bd0;
          border: none;
@@ -139,7 +162,7 @@ body {font-family: "Lato", sans-serif;}
         </ul>
         <ul>
             <div class="topnav">
-                <b><li><a class="active" href="/getHome">Home</a></li></b>
+                <b><li><a class="active" href="/">Home</a></li></b>
                 <li><a href="/products">Products</a></li>
                 <li><a href="/female">Female</a></li>
                 <li><a href="/male">Male</a></li>
@@ -155,7 +178,7 @@ body {font-family: "Lato", sans-serif;}
             </div>
         </ul>
           
-        <h1>Account Summary </h1>
+        <h1>     Account Summary </h1>
         <div class="tab">
                 <button class="tablinks" onclick="openIt(event, 'Order History')" id="defaultOpen">Order History</button>
                 <button class="tablinks" onclick="openIt(event, 'MyAddress')" id="defaultOpen">MyAddress</button>
@@ -164,20 +187,43 @@ body {font-family: "Lato", sans-serif;}
               
               <div id="Order History" class="tabcontent">
                 <h3>Order History</h3>
-                <p>Coming soon</p> 
+                <br><br>
+                        <table id="t01">
+                            <tr>
+                                  <th>Order Number</th>
+                                  <th>Product Nr</th> 
+                                  <th>Product</th>
+                                  <th>Quantity</th>
+                                  <th>Total</th>
+                                </tr>
+                                <% for (p=0; p<shop.length; p++){ %>
+                                    <tr>
+                                        <td><%=shop[p].order_id %></td>
+                                        <td><%=shop[p].product_id %></td>
+                                        <td><%=shop[p].name %></td>
+                                        <td><%=shop[p].quantity %></td>
+                                        <td><%=shop[p].totalprice %></td>
+                                    </tr>
+
+                                
+                                  
+                              <% } %>   
+                                
+                               
+                              </table>
               </div>
               
               <div id="MyAddress" class="tabcontent">
-                <h3>MyAdress</h3>
+                <h3>MyAddress</h3>
                 <br>
-                <% for (i=0; i<shop.length; i++){ %>
+                <% for (i=0; i<1; i++){ %>
                 
                                  <p>
-                                 <%=shop[i].firstname %> <%=shop[i].surname %>  <br>
-                                 <%=shop[i].address %> <br>
-                                 <%=shop[i].zip %> <%=shop[i].city %> <br>
-                                 <%=shop[i].country %> <br><br>
-                                 E-Mail: <%=shop[i].email %>
+                                 <%=shop[1].firstname %> <%=shop[i].surname %>  <br>
+                                 <%=shop[1].address %> <br>
+                                 <%=shop[1].zip %> <%=shop[i].city %> <br>
+                                 <%=shop[1].country %> <br><br>
+                                 E-Mail: <%=shop[1].email %>
                                  </p>
                            
                        <% } %>   

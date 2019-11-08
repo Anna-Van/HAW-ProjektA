@@ -61,7 +61,7 @@ app.post('/doLogin', function(req, res){
             req.session["zip"] = row.zip ;
             req.session["country"] = row.country ;
             req.session["email"] = row.email ;
-            res.redirect("/getHome"); 
+            res.redirect("/"); 
         }
         else {
                 res.render('false',{"message":"Wrong Password"})
@@ -76,7 +76,7 @@ app.post('/doLogin', function(req, res){
 app.get("/logout", function(req, res){
     delete req.session["sessionVariable"];
     delete req.session["user"];
-    res.redirect("/getHome");
+    res.redirect("/");
 });
 
 //Anzeigen von Produktseiten mit Kategorien etc.
@@ -173,7 +173,8 @@ app.get("/sale", function(req, res){
     })
     
 });
-
+//
+//Suchleiste , Datenbank tabelle Products wird nach dem Wort abgesucht und die zeilen dazu ausgegeben
 app.post('/search',function(req,res){
     const search= req.body.search;
 
@@ -185,7 +186,7 @@ app.post('/search',function(req,res){
         
     })
 });
-//
+
 
 //Auswertung nach der Registrierung
 
@@ -219,7 +220,7 @@ app.post('/doRegister', function(req, res) {
 
 });
 //Auswertung Session und Anzeigen von Startseite mit der dazu gehörigen Nachricht
-app.get("/getHome", function(req, res){
+app.get("/", function(req, res){
     console.log(req.session);
     if (!req.session["sessionVariable"]){
     res.render("home", {"message":"Welcome to Candy Kingdom!"}
@@ -245,23 +246,25 @@ app.get("/MyAccount", function(req, res){
         res.redirect("/AccountSummary")
     }
 });
-
+//anzeigen der Account daten wenn Kunde angemeldet
 app.get("/AccountSummary", function(req, res){
     console.log(req.session);
     const user = req.session.user;
     const email = req.session.email;
 
-    let sql = `SELECT * FROM customers WHERE email="${email}";`
+    let sql = `SELECT * FROM ordered_items, orders, customers, products WHERE orders.cid=customers.cid AND ordered_items.order_id=orders.order_id AND ordered_items.product_id=products.pid AND email="${email}";`
 
     db.all(sql, function(err,rows){
         res.render('account',{shop: rows});
     })
 });
 
+//Adressänderung link
 app.get('/changeAddress', function(req, res){
     res.render('address');
 });
 
+//änderung in datenbank nach abschicken des formulars
 app.post('/changeIt', function(req, res) {
     console.log(req.session);
     const email = req.session.email;
