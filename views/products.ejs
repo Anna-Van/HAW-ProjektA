@@ -4,6 +4,13 @@
         <title>Products</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
+        /*copy &paste to other ejs stuffuuuu*/
+            input {
+    border: none;
+    text-align: left;
+    background: transparent;
+}
+/*here stopue*/
             .tooltip {
   position: relative;
   display: inline-block;
@@ -180,19 +187,27 @@
               <li>
                   <br>
                   <div class="card">
-                      <!--<img src="img_avatar.png" alt="Avatar" style="width:100%">-->
                               <div class="container">
+                                  
+                                  <form action="/AddToCart" method="POST">
+                                    <!--add this shiza too-->
                                     <br>
+                                    Article Nr.: <input type=number name="pid" value="<%=shop[i].pid %>" readonly><br><br>
+                                    <!--till here yall-->
                                     <img alt="<%=shop[i].name %>" src="<%=shop[i].pic %>" height="100px" >
                                     <h4><b><%=shop[i].name %> </b></h4> 
                                     <p><br>
+                                    
                                     Species: <%=shop[i].species %> <br>
                                     In Stock: <%=shop[i].stock %> <br>
                                     <div class="tooltip">Description
                                             <span class="tooltiptext"><%=shop[i].description %></span>
                                           </div>
                                     <p class="price"><%=shop[i].price %> €</p> 
-                                    <p><button>Add to Cart</button></p>
+                                    <!--change this motherducking button-->
+                                    <p><button type="submit" value="submit">Add to Cart</button></p>
+                                    <!--eyyy-->
+                                </form>
                               </div>
                             </div> 
                             <br><br><br>
