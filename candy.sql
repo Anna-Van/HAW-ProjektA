@@ -128,17 +128,15 @@ sqlite> INSERT INTO orders(cid) VALUES(1);
 
 
 CREATE TABLE cart(
-    cartId INTEGER AUTO_INCREMENT, 
+
     productName TEXT NOT NULL,
     serialNumber INTEGER,
     unitPrice FLOAT,
     amountProduct INTEGER,
     subTotal FLOAT,
-    grandTotal Float,
+    grandTotal FLOAT,
     FOREIGN KEY(unitPrice) REFERENCES products(price),
     FOREIGN KEY(serialNumber) REFERENCES products(pid),
     FOREIGN KEY(productName) REFERENCES products(name)
 );
 
-
-INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct) VALUES("Ann",1,99.99,1);

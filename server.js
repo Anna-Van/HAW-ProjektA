@@ -296,19 +296,12 @@ app.post('/changeIt', function(req, res) {
 // '/addCart' after pressing on button <add to cart> 
 // !- need to figure out how to tell sql which product to add
 app.post('/addCart', function(req, res){
-    const productName = req.body.productName;
-    const serialNumber = req.body.serialNumber;
-    const unitPrice = req.body.price;
-    const amountProduct = req.body.amountProduct;
-    const subTotal = req.body.subTotal;
-    const grandTotal = req.body.grandTotal;
+    const pid = req.body.pid;
+    const name= req.body.name;
+    const price= req.body.price;
+    const quantity= req.body.quantity;
 
-    let sql = `
-            INSERT INTO cart(productName) VALUES("${product}"); 
-            UPDATE products SET stock=stock-1 WHERE products.name="${product};
-            UPDATE cart SET amountProduct=amountProduct+1 WHERE productName="${product}";
-            UPDATE cart SET subTotal=amountProduct*subTotal WHERE productName="${product}";
-            `
+    let sql = `INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
             db.run(sql, function(err) {
                 if (err) { 
                     console.error(err)

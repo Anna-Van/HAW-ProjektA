@@ -17,7 +17,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <td><a href="/">Continue Shopping</a></td>
+                        <td><a href="/products">Continue Shopping</a></td>
                         <td>Grand Total: </td>
                         <td>
                             <%= shop.grandTotal%>
@@ -31,7 +31,7 @@
                     <td> <%= shop[i].serialNumber %></td>
                     <td> <%= shop[i].unitPrice %> </td>
                     <td> <%= shop[i].amountProduct %> </td>
-                    <td> <%= shop[i].unitPrice * shop[i].amountProduct%></td>
+                    <td> <%= shop[i].subTotal%></td>
                     <% } %>
                 </tr>
             

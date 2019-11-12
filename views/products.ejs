@@ -5,10 +5,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
         /*copy &paste to other ejs stuffuuuu*/
-            input {
-    border: none;
+            input{
+    width: 35px;
+    height: 49px;
     text-align: left;
-    background: transparent;
+    
 }
 /*here stopue*/
             .tooltip {
@@ -49,16 +50,17 @@
   color: grey;
   font-size: 22px;
 }
-
+/*had to change the add to cart button too, I added position: right ; and changed the width to 88%*/
 .card button {
   border: none;
   outline: 0;
   padding: 12px;
   color: white;
   background-color: #000;
+  position: right ;
   text-align: center;
   cursor: pointer;
-  width: 100%;
+  width: 88%;
   font-size: 18px;
 }
 
@@ -189,14 +191,13 @@
                   <div class="card">
                               <div class="container">
                                   
-                                  <form action="/AddToCart" method="POST">
+                                  <form action="/addCart" method="POST">
                                     <!--add this shiza too-->
-                                    <br>
-                                    Article Nr.: <input type=number name="pid" value="<%=shop[i].pid %>" readonly><br><br>
+                                    Article Nr.: <%=shop[i].pid %><br><br>
                                     <!--till here yall-->
                                     <img alt="<%=shop[i].name %>" src="<%=shop[i].pic %>" height="100px" >
                                     <h4><b><%=shop[i].name %> </b></h4> 
-                                    <p><br>
+                                    <br>
                                     
                                     Species: <%=shop[i].species %> <br>
                                     In Stock: <%=shop[i].stock %> <br>
@@ -204,8 +205,12 @@
                                             <span class="tooltiptext"><%=shop[i].description %></span>
                                           </div>
                                     <p class="price"><%=shop[i].price %> €</p> 
-                                    <!--change this motherducking button-->
-                                    <p><button type="submit" value="submit">Add to Cart</button></p>
+                                    <!--change this motherducking button& add hidden inputs-->
+                                    <input type="hidden" id="pid" name="pid" value="<%=shop[i].pid %>">
+                                    <input type="hidden" id="name" name="name" value="<%=shop[i].name %>">
+                                    <input type="hidden" id="price" name="price" value="<%=shop[i].price %>">
+
+                                    <p><input type=number  name="quantity" min="1" max="<%=shop[i].stock %>" value=1><button type="submit">Add to Cart</button></p>
                                     <!--eyyy-->
                                 </form>
                               </div>
