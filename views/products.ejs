@@ -4,14 +4,7 @@
         <title>Products</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
-        /*copy &paste to other ejs stuffuuuu*/
-            input{
-    width: 35px;
-    height: 49px;
-    text-align: left;
-    
-}
-/*here stopue*/
+
             .tooltip {
   position: relative;
   display: inline-block;
@@ -50,7 +43,7 @@
   color: grey;
   font-size: 22px;
 }
-/*had to change the add to cart button too, I added position: right ; and changed the width to 88%*/
+
 .card button {
   border: none;
   outline: 0;
@@ -60,7 +53,7 @@
   position: right ;
   text-align: center;
   cursor: pointer;
-  width: 88%;
+  width: 100%;
   font-size: 18px;
 }
 
@@ -210,7 +203,7 @@
                                     <input type="hidden" id="name" name="name" value="<%=shop[i].name %>">
                                     <input type="hidden" id="price" name="price" value="<%=shop[i].price %>">
 
-                                    <p><input type=number  name="quantity" min="1" max="<%=shop[i].stock %>" value=1><button type="submit">Add to Cart</button></p>
+                                    <p><input type="hidden"  name="quantity" value=1><button type="submit">Add to Cart</button></p>
                                     <!--eyyy-->
                                 </form>
                               </div>
