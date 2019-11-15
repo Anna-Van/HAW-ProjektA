@@ -1,6 +1,8 @@
 // Initialisierung bodyParser etc.
 const express = require('express');
 const app =  express();
+const bcrypt = require('bcrypt');
+
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
@@ -44,29 +46,45 @@ app.get('/login', function(req, res){
     res.render('login');
 })
 
-//Loginauswertung
+//Loginauswertung Problem:abbruch/error wenn user nicht in der datenbank existiert....
 app.post('/doLogin', function(req, res){
     const email = req.body.email;
     const password = req.body.password;
-
-    let sql = `SELECT * FROM customers WHERE email="${email}"`;
-    db.get(sql,function(err,row){
-        req.session.email = row.email;
-        if (password==row.password){
-            req.session["sessionVariable"]= "ist angemeldet";
-            req.session["user"] = row.firstname +" "+ row.surname;
-            req.session["firstname"] = row.firstname ;
-            req.session["surname"] = row.surname ;
-            req.session["address"] = row.address ;
-            req.session["zip"] = row.zip ;
-            req.session["country"] = row.country ;
-            req.session["email"] = row.email ;
-            res.redirect("/"); 
+    let sql2= `SELECT email FROM customers`
+    db.all(sql2,function(err,row){
+        valid=false;
+        for(i=0; i<row.length;i++){
+            if(email==row[i].email){
+                valid=true;
+            }
         }
-        else {
-                res.render('false',{"message":"Wrong Password"})
-        };
+        if(valid==true){
+            let sql = `SELECT * FROM customers WHERE email="${email}"`;
+            db.get(sql,function(err,row){
+                 req.session.email = row.email;
+                if (bcrypt.compareSync(password,row.password)){
+                    req.session["sessionVariable"]= "ist angemeldet";
+                    req.session["user"] = row.firstname +" "+ row.surname;
+                    req.session["firstname"] = row.firstname ;
+                    req.session["surname"] = row.surname ;
+                    req.session["address"] = row.address ;
+                    req.session["zip"] = row.zip ;
+                    req.session["country"] = row.country ;
+                    req.session["email"] = row.email ;
+                    res.redirect("/"); 
+                }
+                else {
+                    res.render('false',{"message":"Wrong Password"})
+                };
+            })
+        }
+        else{
+            res.render('false',{"message":"Account doesn't exist"})
+        }
     })
+
+    
+    
     
 
 });
@@ -201,22 +219,41 @@ app.post('/doRegister', function(req, res) {
     const password = req.body.password;
     const confirm = req.body.confirm;
 
-    if(password==confirm){
-            //SQL Befehl um einen neuen Eintrag der Tabelle user hinzuzufügen
-        let sql = `INSERT INTO customers (firstname,surname, address, zip, city, country, email, password) VALUES ("${firstname}","${surname}","${address}", ${zip} ,"${city}","${country}","${email}", "${password}");`
-        
-        db.run(sql, function(err) {
-            if (err) { 
-                console.error(err)
-            } else {
-                res.render('home',{"message":"Congratulation you are a member now!"});
+    let hash = bcrypt.hashSync(password,10);
+    let sql2=`SELECT email FROM customers;`
+    db.all(sql2,function(err,row){
+        var validy=false;
+        for(i=0;i<row.length;i++){
+            if(email==row[i].email){
+                validy=true;
             }
-        })
-    }
-    else {
-        res.render('registerfalse',{"message": "Passwords don't match"})
-    }
+        }
+        if(validy==true){
+            
+        }
+        else{
+            if(password==confirm){
+                //SQL Befehl um einen neuen Eintrag der Tabelle user hinzuzufügen
+                let sql = `INSERT INTO customers (firstname,surname, address, zip, city, country, email, password) VALUES ("${firstname}","${surname}","${address}", ${zip} ,"${city}","${country}","${email}", "${hash}");`
+                
+                db.run(sql, function(err) {
+                    if (err) { 
+                        console.error(err)
+                    } else {
+                        res.render('home',{"message":"Congratulation you are a member now!"});
+                    }
+                })
+            }
+            else {
+                res.render('registerfalse',{"message": "Passwords don't match"})
+            }
+            
+        }
+    })
+        
 
+    
+    
 
 });
 //Auswertung Session und Anzeigen von Startseite mit der dazu gehörigen Nachricht
@@ -252,7 +289,7 @@ app.get("/AccountSummary", function(req, res){
     const user = req.session.user;
     const email = req.session.email;
 
-    let sql = `SELECT * FROM ordered_items, orders, customers, products WHERE orders.cid=customers.cid AND ordered_items.order_id=orders.order_id AND ordered_items.product_id=products.pid AND email="${email}";`
+    let sql = `SELECT * FROM customers,ordered_items, orders, products WHERE orders.cid=customers.cid AND ordered_items.order_id=orders.order_id AND ordered_items.product_id=products.pid AND email="${email}";`
 
     db.all(sql, function(err,rows){
         res.render('account',{shop: rows});
@@ -300,8 +337,17 @@ app.post('/addCart', function(req, res){
     const name= req.body.name;
     const price= req.body.price;
     const quantity= req.body.quantity;
+    let sql2=`SELECT serialNumber from cart`
 
-    let sql = `INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
+    db.all(sql2, function(err,row){
+        var alr=false;
+        for(i=0;i<row.length;i++){
+            if(pid==row[i].serialNumber){
+                alr=true;
+            }
+        }
+        if(alr==true){
+            let sql= `UPDATE cart SET amountProduct=amountProduct+${quantity}, subTotal=subTotal+${quantity}*${price} WHERE serialNumber=${pid};`
             db.run(sql, function(err) {
                 if (err) { 
                     console.error(err)
@@ -309,11 +355,24 @@ app.post('/addCart', function(req, res){
                     res.render('addcart');
                 }
             })
+        }
+        else{
+            let sql = `INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
+            db.run(sql, function(err) {
+                if (err) { 
+                    console.error(err)
+                } else {
+                    res.render('addcart');
+                }
+            })
+        }
+    })
+    
     
 
 });
 
-//anzeigen ; gotta figure out grandTotal (in .ejs) 
+//warenkorb anzeigen
 app.get("/shoppingCart",function(req,res){
     let sql=`SELECT * FROM cart`;
 
@@ -321,7 +380,28 @@ app.get("/shoppingCart",function(req,res){
         if (err) { 
             console.error(err)
         } else {
-            res.render('cart',{shop:rows});
+            total=0;
+            for(i=0; i<rows.length;i++){
+                total+=rows[i].subTotal;  
+            }
+            
+            res.render('cart',{shop:rows,grand:total});
         }
     })
+});
+
+//produkt aus Warenkorb entfernen
+app.post('/removeFromCart', function(req, res){
+    const serialNumber = req.body.serialNumber;
+
+    let sql = `DELETE FROM cart WHERE serialNumber=${serialNumber};`
+            db.run(sql, function(err) {
+                if (err) { 
+                    console.error(err)
+                } else {
+                    res.redirect('/shoppingCart');
+                }
+            })
+    
+
 });

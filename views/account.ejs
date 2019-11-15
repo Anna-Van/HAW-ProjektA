@@ -219,11 +219,11 @@ body {font-family: "Lato", sans-serif;}
                 <% for (i=0; i<1; i++){ %>
                 
                                  <p>
-                                 <%=shop[1].firstname %> <%=shop[i].surname %>  <br>
-                                 <%=shop[1].address %> <br>
-                                 <%=shop[1].zip %> <%=shop[i].city %> <br>
-                                 <%=shop[1].country %> <br><br>
-                                 E-Mail: <%=shop[1].email %>
+                                 <%=shop[i].firstname %> <%=shop[i].surname %>  <br>
+                                 <%=shop[i].address %> <br>
+                                 <%=shop[i].zip %> <%=shop[i].city %> <br>
+                                 <%=shop[i].country %> <br><br>
+                                 E-Mail: <%=shop[0].email %>
                                  </p>
                            
                        <% } %>   

@@ -94,16 +94,17 @@ CREATE TABLE customers(
 );
 
 INSERT INTO customers(email,password,firstname,surname,address,zip,city,country) 
-VALUES("test@accounts","blub","test","testermann","blubstreet 1",12345,"testcity","testcountry");
+VALUES("test@accounts","blub","test","testermann","blubstreet 1",12345,"testcity","testcountry"),
+("max@haw-hamburg.de","123","Max","Mustermann","Musterstraße 6",12345,"Musterstadt","Musterland");
 
 
 CREATE TABLE orders(
     order_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cid INTEGER,
+    cid INTEGER ,
     FOREIGN KEY(cid) REFERENCES customers(cid)
 );
 
-INSERT INTO orders(cid) VALUES(2);
+INSERT INTO orders(cid) VALUES(2); 
 
 CREATE TABLE ordered_items(
     order_id INTEGER,
@@ -118,6 +119,10 @@ INSERT INTO ordered_items(order_id, product_id, quantity, totalprice)
 VALUES(1, 2,1,4.99),
 (1,4,2,1.98),
 (1,8,3,5.97);
+
+INSERT INTO orders(cid) VALUES(1);       
+INSERT INTO ordered_items(order_id, product_id, quantity, totalprice) 
+VALUES(2, 2,1,4.99);
 
 --für test:
 INSERT INTO ordered_items(order_id, product_id, quantity, totalprice) 

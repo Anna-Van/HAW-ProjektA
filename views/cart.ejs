@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .close {
+  cursor: pointer;
+  top: 50%;
+  right: 0%;
+  size: 5px;
+  
+}
+
+.close:hover {background: #bbb;}
+        </style>
+
         <title>Shopping Cart</title>
         <h1>Shopping Cart</h1>
     </head>
     <body>
+            
             <table>
                 <thead>
                     <tr>
+                    
                         <th>Product</th>
                         <th>Serial Number</th>
                         <th>Unit Price</th>>
                         <th>Amount</th>
                         <th>Sub-Total</th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -20,20 +36,30 @@
                         <td><a href="/products">Continue Shopping</a></td>
                         <td>Grand Total: </td>
                         <td>
-                            <%= shop.grandTotal%>
+                                <%=grand%>
                         </td>
                     </tr>
                 </tfoot>
                 <br>
-            <% for(i = 0 ; i< shop.length;i++){ %>
+             <% 
+             
+                for(i = 0 ; i< shop.length;i++){ %>
                 <tr>
+                    
                     <td> <%= shop[i].productName %></td>
                     <td> <%= shop[i].serialNumber %></td>
                     <td> <%= shop[i].unitPrice %> </td>
                     <td> <%= shop[i].amountProduct %> </td>
-                    <td> <%= shop[i].subTotal%></td>
-                    <% } %>
+                    <td > <%= shop[i].subTotal%></td>
+                    <form action="/removeFromCart" method="POST">
+                        <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
+                    <td><button type="submit" class="close">&times;</button></td>
+                    </form>
+                    
+                    
                 </tr>
+               
+            <% } %>
             
     </body>
 </html>
