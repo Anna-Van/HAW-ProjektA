@@ -1,14 +1,3 @@
-/*Modules
-npm init
-npm install express --save
-npm install body-parser --save
-npm install ejs --save
-npm install express-session --save
-npm install cookie-parser --save
-npm install bcrypt --save
-npm install sqlite3 --save
-*/
-
 // Initialisierung bodyParser etc.
 const express = require('express');
 const app =  express();
@@ -393,11 +382,10 @@ app.get("/shoppingCart",function(req,res){
         } else {
             total=0;
             for(i=0; i<rows.length;i++){
-                total+=rows[i].subTotal; 
-                x=total.toFixed(2);
+                total+=rows[i].subTotal;  
             }
             
-            res.render('cart',{shop:rows,grand:x});
+            res.render('cart',{shop:rows,grand:total});
         }
     })
 });
@@ -414,6 +402,42 @@ app.post('/removeFromCart', function(req, res){
                     res.redirect('/shoppingCart');
                 }
             })
-    
+});
 
+// Checkout-Prozess
+app.get('/payment', function(req, res){
+    res.render('payment');
+});
+app.get('/checkout', function(req, res){
+
+    console.log(req.session);
+    const user = req.session.user;
+    const email = req.session.email;
+    const firstname = req.session.firstname;
+    const surname = req.session.surname;
+    const address = req.session.address;
+    const zip = req.session.zip;
+    const city = req.session.city;
+    const country = req.session.country;
+
+    let sql = `SELECT * FROM customers WHERE email="${email}";`
+
+    db.all(sql, function(err,rows){
+        res.render('checkout',{shop: rows});
+    });   
+});
+app.get('/orderSuccess', function(req, res){
+    console.log(req.session);
+    const user = req.session.user;
+    const email = req.session.email;
+    const order_id = req.body.order_id;
+
+    let sql = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
+
+    db.all(sql, function(err,rows){
+        res.render('orderSuccess',{shop: rows});
+    });
+
+    sql2 = `DELETE FROM cart;`
+    db.run(sql2)
 });
