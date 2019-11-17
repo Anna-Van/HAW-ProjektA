@@ -2,64 +2,147 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
-            .close {
-  cursor: pointer;
-  top: 50%;
-  right: 0%;
-  size: 5px;
-  
-}
 
-.close:hover {background: #bbb;}
+        body {
+            margin: 0;
+            font-family:Arial, Helvetica, sans-serif;
+            width: 100%;
+            height: 100%;
+        }
+        h1{
+            display: block;
+            padding: 25px 30px;
+            color: rgb(212, 100, 175);
+            background-color: rgb(255, 224, 245);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        h2 {
+            font-weight:bold;
+            font-family: Arial;
+            padding-right:15px;
+            text-align: center;
+            
+        }
+        thead{
+            all:none;
+            font-family: Arial;
+            font-weight: bold;
+        }
+        td{
+            font-family: Arial;
+            text-align: center;
+            
+        }
+        th{
+            font-weight:bold;
+            padding-right:20px;
+            padding-left:20px;
+        }
+        .name{
+            padding-left: 20px;
+        }
+        .item{
+            width: 700px;
+            height: 100px;
+            margin: 20px;;
+        }
+        a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 1px;
+            padding-top: 1px;
+            text-decoration: none;
+        }
+        .checkout-button{
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: rgb(255, 224, 245);
+            background-color: rgb(212, 100, 175);
+            position: right ;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+        .checkout-button:hover{
+            opacity: 0.9;
+        }
+
+        .shopping-button{
+            padding-right:20px;
+            position: right;
+            text-align:center;
+            color:rgb(212, 100, 175);
+        }
+        .close {
+            cursor: pointer;
+            top: 50%;
+            right: 0%;
+            size: 5px;
+        }
+
+        .close:hover {
+            background: #bbb;
+        }
+
         </style>
 
         <title>Shopping Cart</title>
         <h1>Shopping Cart</h1>
+        
     </head>
     <body>
             
             <table>
                 <thead>
                     <tr>
-                    
                         <th>Product</th>
                         <th>Serial Number</th>
-                        <th>Unit Price</th>>
+                        <th>Unit Price</th>
                         <th>Amount</th>
                         <th>Sub-Total</th>
-                        <th> </th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <td><a href="/products">Continue Shopping</a></td>
-                        <td>Grand Total: </td>
-                        <td>
-                                <%=grand%>
-                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><h2>Grand Total: </h2></td>
+                        <td><h2><%=grand%></h2></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a href="/products" class="shopping-button">Continue Shopping</a></td>
+                        <td><a href="/checkout" class="checkout-button">Checkout</a></td>
                     </tr>
                 </tfoot>
                 <br>
-             <% 
              
-                for(i = 0 ; i< shop.length;i++){ %>
-                <tr>
-                    
-                    <td> <%= shop[i].productName %></td>
-                    <td> <%= shop[i].serialNumber %></td>
-                    <td> <%= shop[i].unitPrice %> </td>
-                    <td> <%= shop[i].amountProduct %> </td>
-                    <td > <%= shop[i].subTotal%></td>
+                <%for(i = 0 ; i< shop.length;i++){ %>
+                <tr class="item">
+                    <td class="name"><a href="#"><%= shop[i].productName %> </a></td>
+                    <td><%= shop[i].serialNumber %></td>
+                    <td><%= shop[i].unitPrice %></td>
+                    <td><%= shop[i].amountProduct %></td>
+                    <td><%= shop[i].subTotal%></td>
                     <form action="/removeFromCart" method="POST">
                         <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
                     <td><button type="submit" class="close">&times;</button></td>
+                    
                     </form>
-                    
-                    
+                
                 </tr>
                
             <% } %>
-            
+            </table>
     </body>
 </html>
