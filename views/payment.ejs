@@ -1,18 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Shopping Cart</title>
+        <title>Payment</title>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            .close {
-                cursor: pointer;
-                top: 50%;
-                right: 0%;
-                size: 5px;
-            }
-            .close:hover {background: #bbb;}
             h1 {
                  font-family: "Courier New", Courier, monospace;
                  font-size: 50px;
@@ -112,7 +104,7 @@
                 <li><a href="/male">Male</a></li>
                 <li><a href="/androgynous">Androgynous</a></li>
                 <li><a href="/sale">SALE</a></li>
-                
+        
                 <div class="search-container">
                     <form action="/search" method="POST">
                         <input type="text" placeholder="Search.." name="search">
@@ -121,42 +113,20 @@
                 </div>
             </div>
         </ul>
-            
-        <p><b>Shopping Cart</b></p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Serial Number</th>
-                    <th>Unit Price</th>
-                    <th>Amount</th>
-                    <th>Sub-Total</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <td>Grand Total: </td>
-                    <td><%=grand%></td>
-                </tr>
-            </tfoot>
-            <br>
-            <% for(i = 0 ; i< shop.length;i++){ %>
-                <tr>
-                    <td><%= shop[i].productName %></td>
-                    <td><%= shop[i].serialNumber %></td>
-                    <td><%= shop[i].unitPrice %> </td>
-                    <td><%= shop[i].amountProduct %> </td>
-                    <td><%= shop[i].subTotal%></td>
-                    <form action="/removeFromCart" method="POST">
-                        <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
-                        <td><button type="submit" class="close">&times;</button></td>
-                    </form>   
-                </tr>  
-            <% } %>
-        </table>
-        
+
+        <p class="left"><b>Payment Options:</b></p>
+        <form class="left"> 
+              <input type="radio" id="paypal" name="payment" value="paypal">
+              <label for="mc"> PayPal</label><br> 
+              <input type="radio" id="credit Card" name="payment" value="credit card">
+              <label for="vi"> Visa, MasterCard, American Express</label><br>
+              <input type="radio" id="bank transfer" name="payment" value="bank transfer">
+              <label for="ae"> Bank Transfer</label> 
+        </form>
         <br>
-        <a href="/products" class="button" style="float: left;">Continue Shopping</a>
-        <a href="/payment" class="button" style="float: right;">Proceed To Checkout</a>
+
+        <a href="/cart" class="button" style="float: left;">Back</a>
+        <a href="/checkout" class="button" style="float: right;">Next</a>
+        
     </body>
 </html>

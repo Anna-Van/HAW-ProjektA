@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Shopping Cart</title>
-
+        <title>Order Successfull</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            .close {
-                cursor: pointer;
-                top: 50%;
-                right: 0%;
-                size: 5px;
-            }
-            .close:hover {background: #bbb;}
             h1 {
                  font-family: "Courier New", Courier, monospace;
                  font-size: 50px;
@@ -112,7 +103,7 @@
                 <li><a href="/male">Male</a></li>
                 <li><a href="/androgynous">Androgynous</a></li>
                 <li><a href="/sale">SALE</a></li>
-                
+        
                 <div class="search-container">
                     <form action="/search" method="POST">
                         <input type="text" placeholder="Search.." name="search">
@@ -121,42 +112,15 @@
                 </div>
             </div>
         </ul>
-            
-        <p><b>Shopping Cart</b></p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Serial Number</th>
-                    <th>Unit Price</th>
-                    <th>Amount</th>
-                    <th>Sub-Total</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <td>Grand Total: </td>
-                    <td><%=grand%></td>
-                </tr>
-            </tfoot>
-            <br>
-            <% for(i = 0 ; i< shop.length;i++){ %>
-                <tr>
-                    <td><%= shop[i].productName %></td>
-                    <td><%= shop[i].serialNumber %></td>
-                    <td><%= shop[i].unitPrice %> </td>
-                    <td><%= shop[i].amountProduct %> </td>
-                    <td><%= shop[i].subTotal%></td>
-                    <form action="/removeFromCart" method="POST">
-                        <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
-                        <td><button type="submit" class="close">&times;</button></td>
-                    </form>   
-                </tr>  
-            <% } %>
-        </table>
-        
+
+        <p class="left"><b>Your order has been successfully completed!</b></p>
+        <p class="left">Further information will be sent to your E-mail.</p>
         <br>
-        <a href="/products" class="button" style="float: left;">Continue Shopping</a>
-        <a href="/payment" class="button" style="float: right;">Proceed To Checkout</a>
+
+        <% for (p=0; p<shop.length; p++){ %>    
+            <p class="left">Your Order-No.: <%=shop[p].order_id %></p>           
+        <% } %>     
+        
+        <a href="/" class="button">Continue Shopping </a>
     </body>
 </html>
