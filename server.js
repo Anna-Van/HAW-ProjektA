@@ -1,3 +1,14 @@
+/*Modules
+npm init
+npm install express --save
+npm install body-parser --save
+npm install ejs --save
+npm install express-session --save
+npm install cookie-parser --save
+npm install bcrypt --save
+npm install sqlite3 --save
+*/
+
 // Initialisierung bodyParser etc.
 const express = require('express');
 const app =  express();
@@ -382,10 +393,11 @@ app.get("/shoppingCart",function(req,res){
         } else {
             total=0;
             for(i=0; i<rows.length;i++){
-                total+=rows[i].subTotal;  
+                total+=rows[i].subTotal; 
+                x=total.toFixed(2);
             }
             
-            res.render('cart',{shop:rows,grand:total});
+            res.render('cart',{shop:rows,grand:x});
         }
     })
 });
