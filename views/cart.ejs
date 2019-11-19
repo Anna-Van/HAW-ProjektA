@@ -166,7 +166,7 @@
                         <form action="/update" method="POST">
                             <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
                             <input type="hidden" id="price" name="price" value="<%=shop[i].unitPrice %>">
-                            <input type="number" min="1" id="quantity" name="quantity" value= "<%=shop[i].amountProduct%>" style="width:39px; height:25px ;">
+                            <input type="number" min="1" max="<%= shop[i].stock %>" id="quantity" name="quantity" value= "<%=shop[i].amountProduct%>" style="width:39px; height:25px ;">
                             <button type="submit">Update</button>
                         </form>
                     </td>
