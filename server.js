@@ -472,3 +472,22 @@ app.get('/finish',function(req,res){
         }           
     });
 });
+
+
+//update Anzahl von Produkten in Warenkorb
+app.post('/update', function(req, res){
+    const serialNumber = req.body.serialNumber;
+    const quantity = req.body.quantity;
+    const price = req.body.price;
+
+    let sql = `UPDATE cart SET amountProduct=${quantity}, subTotal=${quantity}*${price} WHERE serialNumber=${serialNumber};`
+            db.run(sql, function(err) {
+                if (err) { 
+                    console.error(err)
+                } else {
+                    res.redirect('/shoppingCart');
+                }
+            })
+});
+
+
