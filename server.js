@@ -374,7 +374,7 @@ app.post('/addCart', function(req, res){
 
 //warenkorb anzeigen
 app.get("/shoppingCart",function(req,res){
-    let sql=`SELECT products.pic,cart.* FROM products,cart WHERE cart.serialNumber=products.pid`;
+    let sql=`SELECT products.pic,products.stock,cart.* FROM products,cart WHERE cart.serialNumber=products.pid`;
 
     db.all(sql, function(err,rows) {
         if (err) { 
@@ -382,10 +382,9 @@ app.get("/shoppingCart",function(req,res){
         } else {
             total=0;
             for(i=0; i<rows.length;i++){
-                total+=rows[i].subTotal;  
-                x=total.toFixed(2)
+                total+=rows[i].subTotal; 
             }
-            
+            x=total.toFixed(2)
             res.render('cart',{shop:rows,grand:x});
         }
     })
