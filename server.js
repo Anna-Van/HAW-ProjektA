@@ -465,7 +465,6 @@ app.get('/finish',function(req,res){
                     let sql3 = `DELETE FROM cart;`
                     db.run(sql3)
                     // Order-Nr anzeigen
-                    // res.render('orderSuccess',{shop: rows});
                     res.render('orderSuccess',{orderid});
                 })
             })    
