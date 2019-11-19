@@ -6,6 +6,21 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
+            table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            }
+
+            th, td {
+              text-align: left;
+              padding: 16px;
+            }
+
+            tr:nth-child(even) {
+              background-color: #f2f2f2;
+             }
             .close {
                 cursor: pointer;
                 top: 50%;
@@ -127,6 +142,7 @@
             <thead>
                 <tr>
                     <th>Product</th>
+                    <th>Name</th>
                     <th>Serial Number</th>
                     <th>Unit Price</th>
                     <th>Amount</th>
@@ -136,17 +152,18 @@
             <tfoot>
                 <tr>
                     <td>Grand Total: </td>
-                    <td><%=grand%></td>
+                    <td><%=grand%> €</td>
                 </tr>
             </tfoot>
             <br>
             <% for(i = 0 ; i< shop.length;i++){ %>
                 <tr>
+                    <td><img alt="<%=shop[i].name %>" src="<%=shop[i].pic %>" height="50px" ></td>
                     <td><%= shop[i].productName %></td>
                     <td><%= shop[i].serialNumber %></td>
-                    <td><%= shop[i].unitPrice %> </td>
+                    <td><%= shop[i].unitPrice %> €</td>
                     <td><%= shop[i].amountProduct %> </td>
-                    <td><%= shop[i].subTotal%></td>
+                    <td><%= shop[i].subTotal%> €</td>
                     <form action="/removeFromCart" method="POST">
                         <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
                         <td><button type="submit" class="close">&times;</button></td>
