@@ -406,7 +406,14 @@ app.post('/removeFromCart', function(req, res){
 
 // Checkout-Prozess
 app.get('/payment', function(req, res){
-    res.render('payment');
+    console.log(req.session);
+    if (!req.session["sessionVariable"]){
+    res.redirect("/login");
+    
+    }
+    else {
+        res.render('payment');
+    }
 });
 app.get('/checkout', function(req, res){
 
