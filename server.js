@@ -421,26 +421,10 @@ app.get('/checkout', function(req, res){
     const country = req.session.country;
 
     let sql = `SELECT * FROM customers WHERE email="${email}";`
-
     db.all(sql, function(err,rows){
         res.render('checkout',{shop: rows});
     });   
 });
-/*app.get('/orderSuccess', function(req, res){
-    console.log(req.session);
-    const user = req.session.user;
-    const email = req.session.email;
-    const order_id = req.body.order_id;
-
-    let sql = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
-
-    db.all(sql, function(err,rows){
-        res.render('orderSuccess',{shop: rows});
-    });
-
-    sql2 = `DELETE FROM cart;`
-    db.run(sql2)
-});
 
 app.get('/orderSuccess', function(req, res){
     console.log(req.session);
@@ -461,68 +445,8 @@ app.get('/orderSuccess', function(req, res){
                 }        
             }
         }
-
-
-
-    })
-
-    // Vom Warenkorb in ordered-items
-    let sql7 = `SELECT * from orders;`
-    db.all(sql7, function(row) {
-        for(z=row.length; z<(row.length+1); z++){
-            orderid = row[z].order_id;
-            let sql6 = `insert into ordered_items(order_id,product_id,quantity,totalprice) select ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal from cart;`
-            db.run(sql6) 
-        }
-            
-
-            //let sql8=`SELECT * FROM cart;`
-            //db.all(sql8,function(row){
-            //   for(p=0;p<1;p++){
-            //        serialNumber=row[p].serialNumber;
-            //        amountProduct=row[p].amountProduct;
-            //        subTotal=row[p].subTotal;
-            //        let sql6 = `insert into ordered_items(order_id,product_id,quantity,totalprice) VALUES "${orderid}",${serialNumber},${amountProduct},${subTotal};`
-            //        db.run(sql6)
-            //    }    
-            //})
-        
-    })     
-
-    // Order-Nr anzeigen
-    sql = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
-    db.all(sql, function(err,rows){
-        res.render('orderSuccess',{shop: rows});
-    });
-    
-    // Warenkorb löschen
-    let sql2 = `DELETE FROM cart;`
-    db.run(sql2)
-})*/
-app.get('/orderSuccess', function(req, res){
-    console.log(req.session);
-    const user = req.session.user;
-    const email = req.session.email;
-
-    // neue Order-ID generieren
-    let sql3 = `SELECT email,cid FROM customers`
-    db.all(sql3, function(err,rows) {
-        if (err) { 
-            console.error(err)
-        } else {
-            for(i=0;i<rows.length;i++){
-                if(email==rows[i].email){
-                    cid2 = rows[i].cid;
-                    let sql4 = `INSERT INTO orders(cid) VALUES("${cid2}")`
-                    db.run(sql4)  
-                }        
-            }
-        }
-
         res.redirect('/finish')
-
-    })
-    
+    }) 
 })
 
 app.get('/finish',function(req,res){
@@ -533,34 +457,18 @@ app.get('/finish',function(req,res){
     db.all(sql,function(err,row){
         for(i=row.length-1;i<row.length;i++){
             orderid = row[i].order_id;
-                let sql6 = `insert into ordered_items(order_id,product_id,quantity,totalprice) select ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal from cart;`
-                db.all(sql6, function(err,rows){
-                    sql2 = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
-                    db.all(sql2, function(err,rows){
-                            // Warenkorb löschen
-                        let sql3 = `DELETE FROM cart;`
-                        db.run(sql3)
-                          // Order-Nr anzeigen
-                        res.render('orderSuccess',{shop: rows});
-                        
-                    })
-                }) 
-            
-           
-        }
-         }) 
-
-
-        
-        
-
-  
-    
-    
-
-    
-    
-        
-            
+            let sql6 = `insert into ordered_items(order_id,product_id,quantity,totalprice) select ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal from cart;`
+            db.all(sql6, function(err,rows){
+                sql2 = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
+                db.all(sql2, function(err,rows){
+                    // Warenkorb löschen
+                    let sql3 = `DELETE FROM cart;`
+                    db.run(sql3)
+                    // Order-Nr anzeigen
+                    // res.render('orderSuccess',{shop: rows});
+                    res.render('orderSuccess',{orderid});
+                })
+            })    
+        }           
+    });
 });
-
