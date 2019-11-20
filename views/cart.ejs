@@ -1,156 +1,215 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <style>
-
-        body {
-            margin: 0;
-            font-family:Arial, Helvetica, sans-serif;
-            width: 100%;
-            height: 100%;
-        }
-        h1{
-            display: block;
-            padding: 25px 30px;
-            color: rgb(212, 100, 175);
-            background-color: rgb(255, 224, 245);
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-        h2 {
-            font-weight:bold;
-            font-family: Arial;
-            padding-right:15px;
-            text-align: center;
-            
-        }
-        thead{
-            all:none;
-            font-family: Arial;
-            font-weight: bold;
-        }
-        td{
-            font-family: Arial;
-            text-align: center;
-            
-        }
-        th{
-            font-weight:bold;
-            padding-right:20px;
-            padding-left:20px;
-        }
-        .name{
-            padding-left: 20px;
-        }
-        .item{
-            width: 700px;
-            height: 100px;
-            margin: 20px;
-            /*doesn't work*/
-            border-bottom: 1px solid #E1E8EE;
-        }
-        a {
-            display: block;
-            color: black;
-            text-align: center;
-            padding: 14px 1px;
-            padding-top: 1px;
-            text-decoration: none;
-        }
-        .checkout-button{
-            border: none;
-            outline: 0;
-            padding: 12px;
-            color: rgb(255, 224, 245);
-            background-color: rgb(212, 100, 175);
-            position: right ;
-            text-align: center;
-            cursor: pointer;
-            width: 100%;
-            font-size: 18px;
-            border-radius: 5px;
-        }
-        .checkout-button:hover{
-            opacity: 0.9;
-        }
-
-        .shopping-button{
-            padding-right:20px;
-            position: right;
-            text-align:center;
-            color:rgb(212, 100, 175);
-        }
-        .close {
-            cursor: pointer;
-            top: 50%;
-            right: 0%;
-            size: 5px;
-        }
-
-        .close:hover {
-            background: #bbb;
-        }
-
-        </style>
-
         <title>Shopping Cart</title>
-        <h1>Shopping Cart</h1>
-        
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            }
+
+            th, td {
+              text-align: left;
+              padding: 16px;
+            }
+
+            tr:nth-child(even) {
+              background-color: #f2f2f2;
+             }
+            .close {
+                cursor: pointer;
+                top: 50%;
+                right: 0%;
+                size: 5px;
+            }
+            .close:hover {background: #bbb;}
+            h1 {
+                 font-family: "Courier New", Courier, monospace;
+                 font-size: 50px;
+            }
+            h2{
+                font-weight: 400;
+                margin: 10px 0;
+                padding-left:20px;
+            }
+            body {
+                margin: 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #F5F5F5;
+            } 
+            li {
+                float: left;
+            }     
+            li a {
+                display: block;
+                color: black;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            li a:hover {
+                background-color: white;
+            }    
+            .active {
+                background-color: #FFC0CB;
+            }
+            .topnav .search-container {
+                float: right;
+            }
+            .topnav input[type=text] {
+                padding: 6px;
+                margin-top: 8px;
+                font-size: 17px;
+                border: none;
+            }
+            .topnav .search-container button {
+                float: right;
+                padding: 6px 10px;
+                margin-top: 8px;
+                margin-right: 16px;
+                background: #ddd;
+                font-size: 17px;
+                border: none;
+                cursor: pointer;
+            }
+            .topnav .search-container button:hover {
+                background: #ccc;
+            }
+            @media screen and (max-width: 600px) {
+                .topnav .search-container {
+                    float: none;
+                }
+                .topnav a, .topnav input[type=text], .topnav .search-container button {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                    width: 100%;
+                    margin: 0;
+                    padding: 14px;
+                }
+                .topnav input[type=text] {
+                    border: 1px solid #ccc;  
+                }
+            }
+            .button {
+                background-color: #FFC0CB;
+                border: none;
+                color: black;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                transition:background-color 50ms ease-out, background-color 200ms ease-in;
+            }
+            .button:hover{
+                background-color: rgb(255, 161, 177);
+            }
+            .left    { text-align: left; }
+            .right   { text-align: right; }
+            .center  { text-align: center; }
+            .divider{
+                width:10px;
+                height:auto;
+                display:inline-block;
+            }
+            .biggerdiv{
+                width:760px;
+                height:auto;
+                display:inline-block;
+            }
+        </style>
     </head>
     <body>
+        <ul>
+            <li><h2>Candy Kingdom </h2></li>
+            <li style="float:right"><a class="active" href="/MyAccount">My Account</a></li>
+            <li style="float:right"><a class="active" href="/ShoppingCart">Shopping Cart</a></li>
+        </ul>
+        <ul>
+            <div class="topnav">
+                <b><li><a class="active" href="/">Home</a></li></b>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/female">Female</a></li>
+                <li><a href="/male">Male</a></li>
+                <li><a href="/androgynous">Androgynous</a></li>
+                <li><a href="/sale">SALE</a></li>
+                
+                <div class="search-container">
+                    <form action="/search" method="POST">
+                        <input type="text" placeholder="Search.." name="search">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </ul>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Serial Number</th>
-                        <th>Unit Price</th>
-                        <th>Amount</th>
-                        <th>Sub-Total</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><h2>Grand Total: </h2></td>
-                        <td><h2><%=grand%></h2></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="/products" class="shopping-button">Continue Shopping</a></td>
-                        <td><a href="/checkout" class="checkout-button">Checkout</a></td>
-                    </tr>
-                </tfoot>
-                <br>
-             
-                <%for(i = 0 ; i< shop.length;i++){ %>
-                <tr class="item">
-                    <td class="name"><a href="#"><%= shop[i].productName %> </a></td>
+        <p><div class="divider"></div><b>Shopping Cart</b></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Name</th>
+                    <th>Serial Number</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                    <th>Sub-Total</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Grand Total: </td>
+                    <td><%=grand%> €</td>
+                </tr>
+            </tfoot>
+            <br>
+            <% for(i = 0 ; i< shop.length;i++){ %>
+                <tr>
+                    <td><img alt="<%=shop[i].name %>" src="<%=shop[i].pic %>" height="50px" ></td>
+                    <td><%= shop[i].productName %></a></td>
                     <td><%= shop[i].serialNumber %></td>
-                    <td><%= shop[i].unitPrice %></td>
-                    <td>
+                    <td><%= shop[i].unitPrice %> €</td>
+                    <td> 
                         <form action="/update" method="POST">
                             <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
                             <input type="hidden" id="price" name="price" value="<%=shop[i].unitPrice %>">
-                            <input type="number" min="1" id="quantity" name="quantity" value= "<%=shop[i].amountProduct%>" style="width:39px; height:25px ;">
-                            <button type="submit">Update</button>
+                            <input type="number" min="1" max="<%= shop[i].stock %>" id="quantity" name="quantity" value= "<%=shop[i].amountProduct%>" style="width:39px; height:25px ;">
+                            <button type="submit" style="cursor: pointer;">Update</button>
                         </form>
                     </td>
-                    <td><%= shop[i].subTotal%></td>
+                    <td><%= shop[i].subTotal%> €</td>
                     <form action="/removeFromCart" method="POST">
                         <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
-                    <td><button type="submit" class="close">&times;</button></td>
-                    </form>
-                
-                </tr>
-               
+                        <td><button type="submit" class="close">&times;</button></td>
+                    </form>   
+                </tr>  
             <% } %>
-            </table>
+        </table>
+        
+        <br>
+        <div class="divider"></div>
+        <a href="/products" class="button" >Continue Shopping</a>
+        <div class="biggerdiv"></div>
+        <a href="/payment" class="button">Checkout</a>
+        
+        <br>
     </body>
 </html>
