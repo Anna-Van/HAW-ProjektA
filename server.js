@@ -69,6 +69,7 @@ app.post('/doLogin', function(req, res){
                     req.session["surname"] = row.surname ;
                     req.session["address"] = row.address ;
                     req.session["zip"] = row.zip ;
+                    req.session["city"]= row.city;
                     req.session["country"] = row.country ;
                     req.session["email"] = row.email ;
                     res.redirect("/"); 
@@ -298,7 +299,15 @@ app.get("/AccountSummary", function(req, res){
 
 //Adressänderung link
 app.get('/changeAddress', function(req, res){
-    res.render('address');
+    console.log(req.session);
+    const email = req.session.email;
+    const firstname = req.session.firstname;
+    const surname = req.session.surname;
+    const address = req.session.address;
+    const zip = req.session.zip;
+    const city = req.session.city;
+    const country = req.session.country;  
+    res.render('address',{firstname:firstname,surname:surname,address:address,zip:zip,city:city,country:country});
 });
 
 //änderung in datenbank nach abschicken des formulars
