@@ -87,7 +87,14 @@
             }
             .left    { text-align: left; }
             .right   { text-align: right; }
-            .center  { text-align: center; }
+            .center  { text-align: center; }       
+
+            div.neu {
+                border-radius: 0px;
+                background-color:  white;
+                padding: 15px;
+                font-size: 20px;
+            }
         </style>
     </head>
     <body>
@@ -103,7 +110,7 @@
                 <li><a href="/male">Male</a></li>
                 <li><a href="/androgynous">Androgynous</a></li>
                 <li><a href="/sale">SALE</a></li>
-        
+                
                 <div class="search-container">
                     <form action="/search" method="POST">
                         <input type="text" placeholder="Search.." name="search">
@@ -113,22 +120,10 @@
             </div>
         </ul>
 
-    
-        <p class="left"><b>Billing Adress:</b></p>
-        <% for (p=0; p<shop.length; p++){ %>
-            <p class="left">
-                <%=shop[p].firstname %>
-                <%=shop[p].surname %><br>
-                <%=shop[p].address %><br>
-                <%=shop[p].zip %>
-                <%=shop[p].city %><br>
-                <%=shop[p].country %>
-            </p>         
-        <% } %>   
-
-        <p class="left"><b>Delivery Adress:</b></p>
-        <% for (p=0; p<shop.length; p++){ %>
-                <p class="left">
+        <div class="neu">
+            <p class="neu"><b>Billing Address:</b></p>
+            <% for (p=0; p<shop.length; p++){ %>
+                <p class="neu">
                     <%=shop[p].firstname %>
                     <%=shop[p].surname %><br>
                     <%=shop[p].address %><br>
@@ -136,7 +131,24 @@
                     <%=shop[p].city %><br>
                     <%=shop[p].country %>
                 </p>         
-        <% } %>
+            <% } %>
+            <p class="neu"><b>Delivery Address:</b></p>
+            <% for (p=0; p<shop.length; p++){ %>
+                <p class="neu">
+                    <%=shop[p].firstname %>
+                    <%=shop[p].surname %><br>
+                    <%=shop[p].address %><br>
+                    <%=shop[p].zip %>
+                    <%=shop[p].city %><br>
+                    <%=shop[p].country %>
+                </p>         
+            <% } %>
+        </div>
+            
+        
+
+
+
 
         <a href="/payment" class="button" style="float: left;">Back</a>
         <a href="/orderSuccess" class="button" style="float: right;">Complete Order</a>

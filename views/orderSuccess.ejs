@@ -88,6 +88,13 @@
             .left    { text-align: left; }
             .right   { text-align: right; }
             .center  { text-align: center; }
+
+            div.neu {
+                border-radius: 0px;
+                background-color:  white;
+                padding: 15px;
+                font-size: 20px;
+            }
         </style>
     </head>
     <body>
@@ -113,11 +120,13 @@
             </div>
         </ul>
 
-        <p class="left"><b>Your order has been successfully completed!</b></p>
-        <p class="left">Further information will be sent to your E-mail.</p>
-        <br>
+        <div class="neu">
+            <p class="left"><b>Your order has been successfully completed!</b></p>
+            <p class="left">Further information will be sent to your E-mail.</p>
+            <br>
         
-        <p class="left">Your Order-No.: <%=orderid%></p>           
+            <p class="left">Your Order-No.: <%=orderid%></p>  
+        </div>         
 
         <a href="/" class="button">Continue Shopping </a>
     </body>

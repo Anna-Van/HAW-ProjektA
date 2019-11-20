@@ -89,6 +89,13 @@
             .left    { text-align: left; }
             .right   { text-align: right; }
             .center  { text-align: center; }
+
+            div.neu {
+                border-radius: 0px;
+                background-color:  white;
+                padding: 15px;
+                font-size: 20px;
+            }
         </style>
     </head>
     <body>
@@ -114,15 +121,17 @@
             </div>
         </ul>
 
-        <p class="left"><b>Payment Options:</b></p>
-        <form class="left"> 
-              <input type="radio" id="paypal" name="payment" value="paypal" checked>
-              <label for="mc"> PayPal</label><br> 
-              <input type="radio" id="credit Card" name="payment" value="credit card">
-              <label for="vi"> Visa, MasterCard, American Express</label><br>
-              <input type="radio" id="bank transfer" name="payment" value="bank transfer">
-              <label for="ae"> Bank Transfer</label> 
-        </form>
+        <div class="neu">
+            <p class="left"><b>Payment Options:</b></p>
+            <form class="left"> 
+                <input type="radio" id="paypal" name="payment" value="paypal" checked>
+                <label for="mc"> PayPal</label><br> 
+                <input type="radio" id="credit Card" name="payment" value="credit card">
+                <label for="vi"> Visa, MasterCard, American Express</label><br>
+                <input type="radio" id="bank transfer" name="payment" value="bank transfer">
+                <label for="ae"> Bank Transfer</label> 
+            </form>
+        </div>
         <br>
 
         <a href="/cart" class="button" style="float: left;">Back</a>
