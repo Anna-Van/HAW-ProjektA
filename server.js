@@ -346,6 +346,7 @@ app.post('/addCart', function(req, res){
     const name= req.body.name;
     const price= req.body.price;
     const quantity= req.body.quantity;
+    const amount = req.body.amountProduct;
     let sql2=`SELECT serialNumber from cart`
 
     db.all(sql2, function(err,row){
@@ -416,9 +417,21 @@ app.post('/removeFromCart', function(req, res){
 // Checkout-Prozess
 app.get('/payment', function(req, res){
     console.log(req.session);
+    // Überprüfen, ob die gewollte Anzahl eines Produkts höher ist als vorhanden
+    sql10 = `SELECT cart.amountProduct, products.stock, products.pid FROM cart,products WHERE cart.serialNumber = products.pid;`;
+    db.all(sql10,function(err,rows){
+        for(i=0;i<rows.length;i++){
+            if (rows[i].amountProduct > rows[i].stock) {
+                amount = rows[i].stock;
+                pid = rows[i].pid;
+                sql11 = `UPDATE cart SET amountProduct = ${amount} WHERE cart.serialNumber = ${pid};`;
+                db.run(sql11); 
+            }
+        }
+    })
+    // Überprüfen, ob User angemeldet ist
     if (!req.session["sessionVariable"]){
     res.redirect("/login");
-    
     }
     else {
         res.render('payment');
@@ -473,7 +486,7 @@ app.get('/finish',function(req,res){
     db.all(sql,function(err,row){
         for(i=row.length-1;i<row.length;i++){
             orderid = row[i].order_id;
-            let sql6 = `insert into ordered_items(order_id,product_id,quantity,totalprice) select ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal from cart;`
+            let sql6 = `INSERT INTO ordered_items(order_id,product_id,quantity,totalprice) SELECT ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal FROM cart;`
             db.all(sql6, function(err,rows){
                 sql2 = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
                 db.all(sql2, function(err,rows){
@@ -482,6 +495,18 @@ app.get('/finish',function(req,res){
                     db.run(sql3)
                     // Order-Nr anzeigen
                     res.render('orderSuccess',{orderid});
+                    // Stock in products aktualisieren
+                    sql7 = `SELECT order_id, product_id, quantity FROM ordered_items;`
+                    db.all(sql7,function(err,rows){
+                        for(i=0;i<rows.length;i++){
+                            if(orderid == rows[i].order_id){
+                                productID = rows[i].product_id;
+                                quantity = rows[i].quantity;
+                                sql9 = `UPDATE products SET stock = stock - ${quantity} WHERE pid = ${productID};`
+                                db.run(sql9);
+                            }
+                        }     
+                    })
                 })
             })    
         }           
@@ -504,5 +529,3 @@ app.post('/update', function(req, res){
                 }
             })
 });
-
-
