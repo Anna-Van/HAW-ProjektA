@@ -83,13 +83,7 @@ app.post('/doLogin', function(req, res){
             res.render('false',{"message":"Account doesn't exist"})
         }
     })
-
-    
-    
-    
-
 });
-
 
 //Session abbrechen zum ausloggen
 app.get("/logout", function(req, res){
@@ -102,97 +96,87 @@ app.get("/logout", function(req, res){
 app.get("/products", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('products', {shop: rows});
-    })
+        res.render('products', {shop: rows});
+    });
 });
 
 app.get("/products/bakedGoods", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('bakedGoods', {shop: rows});
-    })
-    
+        res.render('bakedGoods', {shop: rows});
+    });    
 });
 
 app.get("/products/candy", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('candy', {shop: rows});
-    })
-    
+        res.render('candy', {shop: rows});
+    });
 });
 
 app.get("/products/chocolate", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
       res.render('chocolate', {shop: rows});
-    })
-    
+    });
 });
 
 app.get("/products/drinks", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('drinks', {shop: rows});
-    })
-    
+        res.render('drinks', {shop: rows});
+    });
 });
 
 app.get("/products/fruits", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('fruits', {shop: rows});
-    })
-    
+        res.render('fruits', {shop: rows});
+    });
 });
 
 app.get("/products/iceCream", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('iceCream', {shop: rows});
-    })
-    
+        res.render('iceCream', {shop: rows});
+    });
 });
+
 app.get("/products/pudding", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('pudding', {shop: rows});
-    })
-    
+        res.render('pudding', {shop: rows});
+    });
 });
 
 app.get("/female", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('female', {shop: rows});
-    })
-    
+        res.render('female', {shop: rows});
+    });
 });
 
 app.get("/male", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('male', {shop: rows});
-    })
-    
+        res.render('male', {shop: rows});
+    });
 });
 
 app.get("/androgynous", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('androgynous', {shop: rows});
-    })
-    
+        res.render('androgynous', {shop: rows});
+    });
 });
 
 app.get("/sale", function(req, res){
     let sql = "SELECT * FROM products";
     db.all(sql, function(err, rows){
-      res.render('sale', {shop: rows});
-    })
-    
+        res.render('sale', {shop: rows});
+    });
 });
-//
+
 //Suchleiste , Datenbank tabelle Products wird nach dem Wort abgesucht und die zeilen dazu ausgegeben
 app.post('/search',function(req,res){
     const search= req.body.search;
@@ -201,14 +185,11 @@ app.post('/search',function(req,res){
     OR species LIKE '%${search}%'
     OR category LIKE '%${search}';`
     db.all(sql, function(err,rows){
-            res.render('search',{shop: rows});
-        
-    })
+        res.render('search',{shop: rows});        
+    });
 });
 
-
 //Auswertung nach der Registrierung
-
 app.post('/doRegister', function(req, res) {
     const firstname = req.body.firstname;
     const surname = req.body.surname;
@@ -230,7 +211,6 @@ app.post('/doRegister', function(req, res) {
             }
         }
         if(validy==true){
-            
         }
         else{
             if(password==confirm){
@@ -248,22 +228,15 @@ app.post('/doRegister', function(req, res) {
             else {
                 res.render('registerfalse',{"message": "Passwords don't match"})
             }
-            
         }
-    })
-        
-
-    
-    
-
+    });
 });
+
 //Auswertung Session und Anzeigen von Startseite mit der dazu gehörigen Nachricht
 app.get("/", function(req, res){
     console.log(req.session);
     if (!req.session["sessionVariable"]){
-    res.render("home", {"message":"Welcome to Candy Kingdom!"}
-);
-    
+        res.render("home", {"message":"Welcome to Candy Kingdom!"});
     }
     else {
         const user = req.session["user"];
@@ -277,13 +250,13 @@ app.get("/", function(req, res){
 app.get("/MyAccount", function(req, res){
     console.log(req.session);
     if (!req.session["sessionVariable"]){
-    res.redirect("/login");
-    
+        res.redirect("/login");
     }
     else {
         res.redirect("/AccountSummary")
     }
 });
+
 //anzeigen der Account daten wenn Kunde angemeldet
 app.get("/AccountSummary", function(req, res){
     console.log(req.session);
@@ -294,7 +267,7 @@ app.get("/AccountSummary", function(req, res){
 
     db.all(sql, function(err,rows){
         res.render('account',{shop: rows});
-    })
+    });
 });
 
 //Adressänderung link
@@ -322,7 +295,6 @@ app.post('/changeIt', function(req, res) {
     const city = req.body.city;
     const country = req.body.country;   
 
-
     let sql = `UPDATE customers SET firstname="${firstname}", surname="${surname}",address="${address}", zip=${zip}, city="${city}", country="${country}" WHERE email="${email}";`
         
     db.run(sql, function(err) {
@@ -331,12 +303,8 @@ app.post('/changeIt', function(req, res) {
         } else {
              res.render('home',{"message":"Your Account was updated!"});
         }
-    })
-    
-
-
+    });
 });
-
 
 //Shopping cart stuff  : 
 // '/addCart' after pressing on button <add to cart> 
@@ -366,7 +334,7 @@ app.post('/addCart', function(req, res){
                 }
             })
         }
-        else{
+        else {
             let sql = `INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
             db.run(sql, function(err) {
                 if (err) { 
@@ -377,9 +345,6 @@ app.post('/addCart', function(req, res){
             })
         }
     })
-    
-    
-
 });
 
 //warenkorb anzeigen
@@ -405,30 +370,30 @@ app.post('/removeFromCart', function(req, res){
     const serialNumber = req.body.serialNumber;
 
     let sql = `DELETE FROM cart WHERE serialNumber=${serialNumber};`
-            db.run(sql, function(err) {
-                if (err) { 
-                    console.error(err)
-                } else {
-                    res.redirect('/shoppingCart');
-                }
-            })
+    db.run(sql, function(err) {
+        if (err) { 
+            console.error(err)
+        } else {
+            res.redirect('/shoppingCart');
+        }
+    });
 });
 
 // Checkout-Prozess
 app.get('/payment', function(req, res){
     console.log(req.session);
     // Überprüfen, ob die gewollte Anzahl eines Produkts höher ist als vorhanden
-    sql10 = `SELECT cart.amountProduct, products.stock, products.pid FROM cart,products WHERE cart.serialNumber = products.pid;`;
-    db.all(sql10,function(err,rows){
+    sqlStock = `SELECT cart.amountProduct, products.stock, products.pid FROM cart,products WHERE cart.serialNumber = products.pid;`;
+    db.all(sqlStock,function(err,rows){
         for(i=0;i<rows.length;i++){
             if (rows[i].amountProduct > rows[i].stock) {
                 amount = rows[i].stock;
                 pid = rows[i].pid;
-                sql11 = `UPDATE cart SET amountProduct = ${amount} WHERE cart.serialNumber = ${pid};`;
-                db.run(sql11); 
+                sqlAmountCart = `UPDATE cart SET amountProduct = ${amount} WHERE cart.serialNumber = ${pid};`;
+                db.run(sqlAmountCart); 
             }
         }
-    })
+    });
     // Überprüfen, ob User angemeldet ist
     if (!req.session["sessionVariable"]){
     res.redirect("/login");
@@ -437,6 +402,7 @@ app.get('/payment', function(req, res){
         res.render('payment');
     }
 });
+
 app.get('/checkout', function(req, res){
 
     console.log(req.session);
@@ -449,8 +415,8 @@ app.get('/checkout', function(req, res){
     const city = req.session.city;
     const country = req.session.country;
 
-    let sql = `SELECT * FROM customers WHERE email="${email}";`
-    db.all(sql, function(err,rows){
+    let sqlCustomers = `SELECT * FROM customers WHERE email="${email}";`
+    db.all(sqlCustomers, function(err,rows){
         res.render('checkout',{shop: rows});
     });   
 });
@@ -461,58 +427,57 @@ app.get('/orderSuccess', function(req, res){
     const email = req.session.email;
 
     // neue Order-ID generieren
-    let sql3 = `SELECT email,cid FROM customers`
-    db.all(sql3, function(err,rows) {
+    let sqlCustomerID = `SELECT email,cid FROM customers`
+    db.all(sqlCustomerID, function(err,rows) {
         if (err) { 
             console.error(err)
         } else {
-            for(i=0;i<rows.length;i++){
-                if(email==rows[i].email){
-                    cid2 = rows[i].cid;
-                    let sql4 = `INSERT INTO orders(cid) VALUES("${cid2}")`
-                    db.run(sql4)  
+            for (i=0;i<rows.length;i++) {
+                if(email==rows[i].email) {
+                    customerID = rows[i].cid;
+                    let sqlOrderID = `INSERT INTO orders(cid) VALUES("${customerID}")`
+                    db.run(sqlOrderID)  
                 }        
             }
         }
         res.redirect('/finish')
-    }) 
-})
+    }); 
+});
 
 app.get('/finish',function(req,res){
     console.log(req.session);
     const user = req.session.user;
     const email = req.session.email;
-    let sql = `SELECT order_id from orders`
-    db.all(sql,function(err,row){
+    let sqlOrders = `SELECT order_id from orders`
+    db.all(sqlOrders,function(err,row){
         for(i=row.length-1;i<row.length;i++){
             orderid = row[i].order_id;
-            let sql6 = `INSERT INTO ordered_items(order_id,product_id,quantity,totalprice) SELECT ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal FROM cart;`
-            db.all(sql6, function(err,rows){
-                sql2 = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
-                db.all(sql2, function(err,rows){
+            let sqlFromCartToItems = `INSERT INTO ordered_items(order_id,product_id,quantity,totalprice) SELECT ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal FROM cart;`
+            db.all(sqlFromCartToItems, function(err,rows){
+                sql = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
+                db.all(sql, function(err,rows){
                     // Warenkorb löschen
-                    let sql3 = `DELETE FROM cart;`
-                    db.run(sql3)
+                    let sqlDeleteCart = `DELETE FROM cart;`
+                    db.run(sqlDeleteCart)
                     // Order-Nr anzeigen
                     res.render('orderSuccess',{orderid});
                     // Stock in products aktualisieren
-                    sql7 = `SELECT order_id, product_id, quantity FROM ordered_items;`
-                    db.all(sql7,function(err,rows){
+                    sqlQuantity = `SELECT order_id, product_id, quantity FROM ordered_items;`
+                    db.all(sqlQuantity,function(err,rows){
                         for(i=0;i<rows.length;i++){
                             if(orderid == rows[i].order_id){
                                 productID = rows[i].product_id;
                                 quantity = rows[i].quantity;
-                                sql9 = `UPDATE products SET stock = stock - ${quantity} WHERE pid = ${productID};`
-                                db.run(sql9);
+                                sqlUpdateStock = `UPDATE products SET stock = stock - ${quantity} WHERE pid = ${productID};`
+                                db.run(sqlUpdateStock);
                             }
                         }     
-                    })
-                })
-            })    
+                    });
+                });
+            });    
         }           
     });
 });
-
 
 //update Anzahl von Produkten in Warenkorb
 app.post('/update', function(req, res){
@@ -521,11 +486,11 @@ app.post('/update', function(req, res){
     const price = req.body.price;
 
     let sql = `UPDATE cart SET amountProduct=${quantity}, subTotal=${quantity}*${price} WHERE serialNumber=${serialNumber};`
-            db.run(sql, function(err) {
-                if (err) { 
-                    console.error(err)
-                } else {
-                    res.redirect('/shoppingCart');
-                }
-            })
+    db.run(sql, function(err) {
+        if (err) { 
+            console.error(err)
+        } else {
+            res.redirect('/shoppingCart');
+        }
+    });
 });
