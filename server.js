@@ -64,6 +64,7 @@ app.post('/doLogin', function(req, res){
                  req.session.email = row.email;
                 if (bcrypt.compareSync(password,row.password)){
                     req.session["sessionVariable"]= "ist angemeldet";
+                    req.session["cid"]= row.cid;
                     req.session["user"] = row.firstname +" "+ row.surname;
                     req.session["firstname"] = row.firstname ;
                     req.session["surname"] = row.surname ;
@@ -89,6 +90,15 @@ app.post('/doLogin', function(req, res){
 app.get("/logout", function(req, res){
     delete req.session["sessionVariable"];
     delete req.session["user"];
+    delete req.session["cid"];
+    delete req.session["firstname"];
+    delete req.session["surname"];
+    delete req.session["address"];
+    delete req.session["zip"];
+    delete req.session["city"];
+    delete req.session["country"];
+    delete req.session["email"];
+    
     res.redirect("/");
 });
 
@@ -211,17 +221,38 @@ app.post('/doRegister', function(req, res) {
             }
         }
         if(validy==true){
+            res.render('registerfalse',{"message": "Account already exists"})
+
         }
         else{
             if(password==confirm){
                 //SQL Befehl um einen neuen Eintrag der Tabelle user hinzuzufügen
                 let sql = `INSERT INTO customers (firstname,surname, address, zip, city, country, email, password) VALUES ("${firstname}","${surname}","${address}", ${zip} ,"${city}","${country}","${email}", "${hash}");`
                 
-                db.run(sql, function(err) {
+                db.all(sql, function(err) {
                     if (err) { 
                         console.error(err)
                     } else {
-                        res.render('home',{"message":"Congratulation you are a member now!"});
+                        let sql3=`SELECT * FROM customers WHERE email="${email}";`
+                        db.all(sql3, function(err,rows){
+                            const cartNumber= rows.cid;
+                            let sql4=`CREATE TABLE cart${cartNumber}(
+                        
+                                productName TEXT NOT NULL,
+                                serialNumber INTEGER,
+                                unitPrice FLOAT,
+                                amountProduct INTEGER,
+                                subTotal FLOAT,
+                                grandTotal FLOAT,
+                                FOREIGN KEY(unitPrice) REFERENCES products(price),
+                                FOREIGN KEY(serialNumber) REFERENCES products(pid),
+                                FOREIGN KEY(productName) REFERENCES products(name)
+                            );`
+                            db.all(sql4,function(err){
+                               res.render('home',{"message":"Congratulation you are a member now!"}); 
+                            })
+                        })
+                        
                     }
                 })
             }
@@ -263,7 +294,26 @@ app.get("/AccountSummary", function(req, res){
     const user = req.session.user;
     const email = req.session.email;
 
-    let sql = `SELECT * FROM customers,ordered_items, orders, products WHERE orders.cid=customers.cid AND ordered_items.order_id=orders.order_id AND ordered_items.product_id=products.pid AND email="${email}";`
+    let sql = `SELECT * FROM customers, orders,ordered_items, products WHERE orders.cid=customers.cid AND ordered_items.order_id=orders.order_id AND ordered_items.product_id=products.pid AND email="${email}";`
+
+    db.all(sql, function(err,rows){
+        let sql2=`SELECT * FROM customers WHERE email="${email}";`
+        db.all(sql2,function(err,row){
+          res.render('account',{shop: rows,user:row});  
+        })
+        
+    })
+});
+
+//Adressänderung link
+app.get('/changeAddress', function(req, res){
+    res.render('address');
+});
+
+//änderung in datenbank nach abschicken des formulars
+app.post('/changeIt', function(req, res) {
+    console.log(req.session);
+    const email = req.session.email;
 
     db.all(sql, function(err,rows){
         res.render('account',{shop: rows});
@@ -310,66 +360,84 @@ app.post('/changeIt', function(req, res) {
 // '/addCart' after pressing on button <add to cart> 
 // !- need to figure out how to tell sql which product to add
 app.post('/addCart', function(req, res){
+    console.log(req.session);
+    const cartNumber= req.session.cid;
     const pid = req.body.pid;
     const name= req.body.name;
     const price= req.body.price;
     const quantity= req.body.quantity;
     const amount = req.body.amountProduct;
-    let sql2=`SELECT serialNumber from cart`
+    if (!req.session["sessionVariable"]){
+        res.redirect("/login");
+    }
+    else{
+        let sql2=`SELECT serialNumber from cart${cartNumber}`
 
-    db.all(sql2, function(err,row){
-        var alr=false;
-        for(i=0;i<row.length;i++){
-            if(pid==row[i].serialNumber){
-                alr=true;
+        db.all(sql2, function(err,row){
+            var alr=false;
+            for(i=0;i<row.length;i++){
+                if(pid==row[i].serialNumber){
+                    alr=true;
+                }
             }
-        }
-        if(alr==true){
-            let sql= `UPDATE cart SET amountProduct=amountProduct+${quantity}, subTotal=subTotal+${quantity}*${price} WHERE serialNumber=${pid};`
-            db.run(sql, function(err) {
-                if (err) { 
-                    console.error(err)
-                } else {
-                    res.render('addcart');
-                }
-            })
-        }
-        else {
-            let sql = `INSERT INTO cart(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
-            db.run(sql, function(err) {
-                if (err) { 
-                    console.error(err)
-                } else {
-                    res.render('addcart');
-                }
-            })
-        }
-    })
+            if(alr==true){
+                let sql= `UPDATE cart${cartNumber} SET amountProduct=amountProduct+${quantity}, subTotal=subTotal+${quantity}*${price} WHERE serialNumber=${pid};`
+                db.run(sql, function(err) {
+                    if (err) { 
+                        console.error(err)
+                    } else {
+                        res.render('addcart');
+                    }
+                })
+            }
+            else {
+                let sql = `INSERT INTO cart${cartNumber}(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
+                db.run(sql, function(err) {
+                    if (err) { 
+                        console.error(err)
+                    } else {
+                        res.render('addcart');
+                    }
+                })
+            }
+        })
+    }
+
 });
 
 //warenkorb anzeigen
 app.get("/shoppingCart",function(req,res){
-    let sql=`SELECT products.pic,products.stock,cart.* FROM products,cart WHERE cart.serialNumber=products.pid`;
+    console.log(req.session);
+    const cartNumber= req.session.cid;
+    if (!req.session["sessionVariable"]){
+        res.redirect("/login");
+    }
+    else{
+        let sql=`SELECT products.pic,products.stock,cart${cartNumber}.* FROM products,cart${cartNumber} WHERE cart${cartNumber}.serialNumber=products.pid`;
 
-    db.all(sql, function(err,rows) {
-        if (err) { 
-            console.error(err)
-        } else {
-            total=0;
-            for(i=0; i<rows.length;i++){
-                total+=rows[i].subTotal; 
+        db.all(sql, function(err,rows) {
+            if (err) { 
+                console.error(err)
+            } else {
+                total=0;
+                for(i=0; i<rows.length;i++){
+                    total+=rows[i].subTotal; 
+                }
+                x=total.toFixed(2)
+                res.render('cart',{shop:rows,grand:x});
             }
-            x=total.toFixed(2)
-            res.render('cart',{shop:rows,grand:x});
-        }
-    })
+        })
+    }
+
 });
 
 //produkt aus Warenkorb entfernen
 app.post('/removeFromCart', function(req, res){
+    console.log(req.session);
+    const cartNumber= req.session.cid;
     const serialNumber = req.body.serialNumber;
 
-    let sql = `DELETE FROM cart WHERE serialNumber=${serialNumber};`
+    let sql = `DELETE FROM cart${cartNumber} WHERE serialNumber=${serialNumber};`
     db.run(sql, function(err) {
         if (err) { 
             console.error(err)
@@ -382,14 +450,15 @@ app.post('/removeFromCart', function(req, res){
 // Checkout-Prozess
 app.get('/payment', function(req, res){
     console.log(req.session);
+    const cartNumber= req.session.cid;
     // Überprüfen, ob die gewollte Anzahl eines Produkts höher ist als vorhanden
-    sqlStock = `SELECT cart.amountProduct, products.stock, products.pid FROM cart,products WHERE cart.serialNumber = products.pid;`;
+    sqlStock = `SELECT cart${cartNumber}.amountProduct, products.stock, products.pid FROM cart${cartNumber},products WHERE cart${cartNumber}.serialNumber = products.pid;`;
     db.all(sqlStock,function(err,rows){
         for(i=0;i<rows.length;i++){
             if (rows[i].amountProduct > rows[i].stock) {
                 amount = rows[i].stock;
                 pid = rows[i].pid;
-                sqlAmountCart = `UPDATE cart SET amountProduct = ${amount} WHERE cart.serialNumber = ${pid};`;
+                sqlAmountCart = `UPDATE cart${cartNumber} SET amountProduct = ${amount} WHERE cart${cartNumber}.serialNumber = ${pid};`;
                 db.run(sqlAmountCart); 
             }
         }
@@ -446,18 +515,19 @@ app.get('/orderSuccess', function(req, res){
 
 app.get('/finish',function(req,res){
     console.log(req.session);
+    const cartNumber=req.session.cid;
     const user = req.session.user;
     const email = req.session.email;
     let sqlOrders = `SELECT order_id from orders`
     db.all(sqlOrders,function(err,row){
         for(i=row.length-1;i<row.length;i++){
             orderid = row[i].order_id;
-            let sqlFromCartToItems = `INSERT INTO ordered_items(order_id,product_id,quantity,totalprice) SELECT ${orderid},cart.serialNumber,cart.amountProduct,cart.subTotal FROM cart;`
+            let sqlFromCartToItems = `INSERT INTO ordered_items(order_id,product_id,quantity,totalprice) SELECT ${orderid},cart${cartNumber}.serialNumber,cart${cartNumber}.amountProduct,cart${cartNumber}.subTotal FROM cart${cartNumber};`
             db.all(sqlFromCartToItems, function(err,rows){
                 sql = `SELECT orders.order_id FROM customers,orders WHERE customers.email="${email}" AND orders.cid=customers.cid;`
                 db.all(sql, function(err,rows){
                     // Warenkorb löschen
-                    let sqlDeleteCart = `DELETE FROM cart;`
+                    let sqlDeleteCart = `DELETE FROM cart${cartNumber};`
                     db.run(sqlDeleteCart)
                     // Order-Nr anzeigen
                     res.render('orderSuccess',{orderid});
@@ -481,11 +551,13 @@ app.get('/finish',function(req,res){
 
 //update Anzahl von Produkten in Warenkorb
 app.post('/update', function(req, res){
+    console.log(req.session);
+    const cartNumber=req.session.cid;
     const serialNumber = req.body.serialNumber;
     const quantity = req.body.quantity;
     const price = req.body.price;
 
-    let sql = `UPDATE cart SET amountProduct=${quantity}, subTotal=${quantity}*${price} WHERE serialNumber=${serialNumber};`
+    let sql = `UPDATE cart${cartNumber} SET amountProduct=${quantity}, subTotal=${quantity}*${price} WHERE serialNumber=${serialNumber};`
     db.run(sql, function(err) {
         if (err) { 
             console.error(err)
