@@ -132,7 +132,20 @@ sqlite> INSERT INTO orders(cid) VALUES(1);
 sqlite> INSERT INTO orders(cid) VALUES(1);
 
 
-CREATE TABLE cart(
+CREATE TABLE cart1(
+
+    productName TEXT NOT NULL,
+    serialNumber INTEGER,
+    unitPrice FLOAT,
+    amountProduct INTEGER,
+    subTotal FLOAT,
+    grandTotal FLOAT,
+    FOREIGN KEY(unitPrice) REFERENCES products(price),
+    FOREIGN KEY(serialNumber) REFERENCES products(pid),
+    FOREIGN KEY(productName) REFERENCES products(name)
+);
+
+CREATE TABLE cart2(
 
     productName TEXT NOT NULL,
     serialNumber INTEGER,
