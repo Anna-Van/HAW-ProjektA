@@ -233,9 +233,9 @@ app.post('/doRegister', function(req, res) {
                     if (err) { 
                         console.error(err)
                     } else {
-                        let sql3=`SELECT * FROM customers WHERE email="${email}";`
+                        let sql3=`SELECT cid FROM customers WHERE email="${email}";`
                         db.all(sql3, function(err,rows){
-                            const cartNumber= rows.cid;
+                            const cartNumber= rows[0].cid;
                             let sql4=`CREATE TABLE cart${cartNumber}(
                         
                                 productName TEXT NOT NULL,
@@ -249,7 +249,7 @@ app.post('/doRegister', function(req, res) {
                                 FOREIGN KEY(productName) REFERENCES products(name)
                             );`
                             db.all(sql4,function(err){
-                               res.render('home',{"message":"Congratulation you are a member now!"}); 
+                               res.render('home',{"message":"Congratulation you are a member now! Email: "+email,"message2":""}); 
                             })
                         })
                         
@@ -267,12 +267,12 @@ app.post('/doRegister', function(req, res) {
 app.get("/", function(req, res){
     console.log(req.session);
     if (!req.session["sessionVariable"]){
-        res.render("home", {"message":"Welcome to Candy Kingdom!"});
+        res.render("home", {"message":"Welcome to Candy Kingdom!","message2":"The purchase of Candy Kingdom Inhabitants is only available to our members! Please Log In by clicking on My Account before continuing.         Princess Bubblegum"});
     }
     else {
         const user = req.session["user"];
         res.render("home", {
-            "message":"Welcome "+ user
+            "message":"Welcome "+ user ,"message2":""
         });
     }
 });
@@ -305,20 +305,8 @@ app.get("/AccountSummary", function(req, res){
     })
 });
 
-//Adressänderung link
-app.get('/changeAddress', function(req, res){
-    res.render('address');
-});
 
-//änderung in datenbank nach abschicken des formulars
-app.post('/changeIt', function(req, res) {
-    console.log(req.session);
-    const email = req.session.email;
 
-    db.all(sql, function(err,rows){
-        res.render('account',{shop: rows});
-    });
-});
 
 //Adressänderung link
 app.get('/changeAddress', function(req, res){
@@ -351,7 +339,7 @@ app.post('/changeIt', function(req, res) {
         if (err) { 
             console.error(err)
         } else {
-             res.render('home',{"message":"Your Account was updated!"});
+             res.render('home',{"message":"Your Account was updated!","message2":""});
         }
     });
 });

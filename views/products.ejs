@@ -4,61 +4,70 @@
         <title>Products</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-}
+            h2{
+                font-family: "Courier New", Courier, monospace;
+                 font-size: 50px;
+                 color: whitesmoke;
+                 background-color: lightpink;
+                padding :30px;
+                border-radius: 25px;
+                
+            }
+            .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+            }
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 300px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  top: -5px;
-  left: 105%;
-}
+            .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: -5px;
+            left: 105%;
+            }
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-            .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  width: 350px;
-  height: 420px; 
-  margin: auto;
-  text-align: center;
-  font-family: arial;
-}
+            .tooltip:hover .tooltiptext {
+            visibility: visible;
+            }
+                        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            width: 350px;
+            height: 420px; 
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+            }
 
-.price {
-  color: grey;
-  font-size: 22px;
-}
+            .price {
+            color: grey;
+            font-size: 22px;
+            }
 
-.card button {
-  border: none;
-  outline: 0;
-  padding: 12px;
-  color: white;
-  background-color: #000;
-  position: right ;
-  text-align: center;
-  cursor: pointer;
-  width: 88%;
-  font-size: 18px;
-}
+            .card button {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: white;
+            background-color: rgb(48, 48, 48);
+            position: right ;
+            text-align: center;
+            cursor: pointer;
+            width: 88%;
+            font-size: 18px;
+            }
 
-.card button:hover {
-  opacity: 0.7;
-}
+            .card button:hover {
+            opacity: 0.7;
+            }
 
             body {
                 margin: 0;
@@ -129,7 +138,7 @@
     </head>
     <body>
         <ul>
-
+                <li><h2><b>Candy Kingdom</b></h2></li>
             <li style="float:right"><a class="active" href="/MyAccount">My Account</a></li>
             <li style="float:right"><a class="active" href="/ShoppingCart">Shopping Cart</a></li>
         </ul>

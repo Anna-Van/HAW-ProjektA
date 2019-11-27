@@ -5,64 +5,69 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             .tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-}
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+            }
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 300px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  top: -5px;
-  left: 105%;
-}
+            .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: -5px;
+            left: 105%;
+            }
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-            .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  width: 350px;
-  height: 420px; 
-  margin: auto;
-  text-align: center;
-  font-family: arial;
-}
+            .tooltip:hover .tooltiptext {
+            visibility: visible;
+            }
+                        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            width: 350px;
+            height: 420px; 
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+            }
 
-.price {
-  color: grey;
-  font-size: 22px;
-}
+            .price {
+            color: grey;
+            font-size: 22px;
+            }
 
-.card button {
-  border: none;
-  outline: 0;
-  padding: 12px;
-  color: white;
-  background-color: rgb(48, 48, 48);
-  text-align: center;
-  cursor: pointer;
-  width: 88%;
-  font-size: 18px;
-  transition:background-color 50ms ease-out, background-color 200ms ease-in;
-}
+            .card button {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: white;
+            background-color: rgb(48, 48, 48);
+            text-align: center;
+            cursor: pointer;
+            width: 88%;
+            font-size: 18px;
+            transition:background-color 50ms ease-out, background-color 200ms ease-in;
+            }
 
-.card button:hover {
-  background-color:rgb(24, 24, 24);
-}
-
- h2{
-	padding-left:20px;
-}
+            .card button:hover {
+            background-color:rgb(24, 24, 24);
+            }
+            h2{
+                font-family: "Courier New", Courier, monospace;
+                 font-size: 50px;
+                 color: whitesmoke;
+                 background-color: lightpink;
+                padding :30px;
+                border-radius: 25px;
+                
+            }
             body {
                 margin: 0;
                 font-family: Arial, Helvetica, sans-serif;
@@ -132,7 +137,7 @@
     </head>
     <body>
         <ul>
-            <li><h2>Candy Kingdom </h2></li>
+                <li><h2><b>Candy Kingdom</b></h2></li>
             <li style="float:right"><a class="active" href="/MyAccount">My Account</a></li>
             <li style="float:right"><a class="active" href="/ShoppingCart">Shopping Cart</a></li>
         </ul>
@@ -201,7 +206,11 @@
                                     <input type="hidden" id="pid" name="pid" value="<%=shop[i].pid %>">
                                     <input type="hidden" id="name" name="name" value="<%=shop[i].name %>">
                                     <input type="hidden" id="price" name="price" value="<%=shop[i].price %>">
-                                    <p><input type="number" min="1" max="<%=shop[i].stock %>"" name="quantity" value=1 style="width:42px; height:52px ;"><button type="submit">Add to Cart</button></p>
+                                    <% if (shop[i].stock == 0){ %>
+                                        <p><input type="number"  min="0" max="0" name="quantity" value=0 style="width:39px; height:50px ;"><button type="submit" disabled>Sold out</button></p>
+                                        <% } else { %>
+                                        <p><input type="number" min="1" max="<%=shop[i].stock %>"" name="quantity" value=1 style="width:39px; height:50px ;"><button type="submit">Add to Cart</button></p>
+                                    <% } %>
                                     </form>
                         </div>
                       </div>

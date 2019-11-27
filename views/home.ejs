@@ -8,8 +8,18 @@
                  font-family: "Courier New", Courier, monospace;
                  font-size: 50px;
             }
+            p {
+                font-family: "Courier New", Courier, monospace;
+                 font-size: 35px;  
+            }
             h2{
-                padding-left:20px;
+
+                 font-size: 50px;
+                 color: whitesmoke;
+                 background-color: lightpink;
+                padding :30px;
+                border-radius: 25px;
+                
             }
             body {
                 margin: 0;
@@ -37,6 +47,7 @@
             }    
             .active {
                 background-color: #FFC0CB;
+                
             }
             .topnav .search-container {
                 float: right;
@@ -56,6 +67,7 @@
                 font-size: 17px;
                 border: none;
                 cursor: pointer;
+                
             }
             .topnav .search-container button:hover {
                 background: #ccc;
@@ -80,7 +92,7 @@
     </head>
     <body>
         <ul>
-            <li><h2>Candy Kingdom</h2></li>
+            <li><h2><b>Candy Kingdom</b></h2></li>
             <li style="float:right"><a class="active" href="/MyAccount">My Account</a></li>
             <li style="float:right"><a class="active" href="/ShoppingCart">Shopping Cart</a></li>
         </ul>
@@ -101,8 +113,11 @@
                 </div>
             </div>
         </ul>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
           <br><br>
         <center><h1><%=message %></h1>
+            <p><%=message2%> </p>
+            
             <img src="https://www.nicepng.com/png/detail/397-3976769_princess-bubblegum-peace-sign.png" alt="Princess Bubblegum Peace Sign@nicepng.com" height="400px">
     </center>
 </body>
