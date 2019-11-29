@@ -542,10 +542,10 @@ app.post('/update', function(req, res){
     console.log(req.session);
     const cartNumber=req.session.cid;
     const serialNumber = req.body.serialNumber;
-    const quantity = req.body.quantity;
     const price = req.body.price;
+    const update= req.body.update;
 
-    let sql = `UPDATE cart${cartNumber} SET amountProduct=${quantity}, subTotal=${quantity}*${price} WHERE serialNumber=${serialNumber};`
+    let sql = `UPDATE cart${cartNumber} SET amountProduct=amountProduct+${update}, subTotal=ROUND(subTotal+(${update}*${price}),2) WHERE serialNumber=${serialNumber};`
     db.run(sql, function(err) {
         if (err) { 
             console.error(err)
