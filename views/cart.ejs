@@ -197,10 +197,15 @@
                     <td><%= shop[i].unitPrice %> €</td>
                     <td> 
                         <form action="/update" method="POST">
+                            <% if(shop[i].amountProduct > 1){ %>
+                                <button type="submit" id="update" name="update" value=(-1) style="width: 25px;">-</button>
+                            <% } %>
+                            <%=shop[i].amountProduct%>
                             <input type="hidden" id="serialNumber" name="serialNumber" value="<%=shop[i].serialNumber %>">
                             <input type="hidden" id="price" name="price" value="<%=shop[i].unitPrice %>">
-                            <input type="number" min="1" max="<%= shop[i].stock %>" id="quantity" name="quantity" value= "<%=shop[i].amountProduct%>" style="width:39px; height:25px ;">
-                            <button type="submit" style="cursor: pointer;">Update</button>
+                            <% if(shop[i].amountProduct < shop[i].stock){ %>
+                                <button type="submit" id="update" name="update" value=1 style="width: 25px;">+</button>
+                            <% } %>
                         </form>
                     </td>
                     <td><%= shop[i].subTotal%> €</td>
