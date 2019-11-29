@@ -195,7 +195,7 @@ app.post('/search',function(req,res){
     OR species LIKE '%${search}%'
     OR category LIKE '%${search}';`
     db.all(sql, function(err,rows){
-        res.render('search',{shop: rows});        
+        res.render('search',{shop: rows,search:search});        
     });
 });
 
