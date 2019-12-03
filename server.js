@@ -369,7 +369,7 @@ app.post('/addCart', function(req, res){
                 }
             }
             if(alr==true){
-                let sql= `UPDATE cart${cartNumber} SET amountProduct=amountProduct+${quantity}, subTotal=subTotal+${quantity}*${price} WHERE serialNumber=${pid};`
+                let sql= `UPDATE cart${cartNumber} SET amountProduct=amountProduct+${quantity}, subTotal=ROUND(subTotal+${quantity}*${price},2) WHERE serialNumber=${pid};`
                 db.run(sql, function(err) {
                     if (err) { 
                         console.error(err)
@@ -379,7 +379,7 @@ app.post('/addCart', function(req, res){
                 })
             }
             else {
-                let sql = `INSERT INTO cart${cartNumber}(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},${price}*${quantity});`
+                let sql = `INSERT INTO cart${cartNumber}(productName,serialNumber,unitPrice,amountProduct,subTotal) VALUES("${name}",${pid},${price},${quantity},ROUND(${price}*${quantity},2));`
                 db.run(sql, function(err) {
                     if (err) { 
                         console.error(err)
